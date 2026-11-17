@@ -13,7 +13,8 @@ const activeTokens = new Set();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const dataDir = path.join(__dirname, 'data');
+// Gunakan /tmp/data saat berjalan di Vercel (serverless), dan folder ./data saat lokal
+const dataDir = process.env.VERCEL ? '/tmp/data' : path.join(__dirname, 'data');
 const dbFile = path.join(dataDir, 'diksi_1501.json');
 
 // Seluruh Indikator & Sub-Indikator Data Strategis Kabupaten Kerinci (2018-2026)
@@ -388,7 +389,6 @@ function readDB() {
     return INITIAL_DB;
   }
   const parsed = JSON.parse(fs.readFileSync(dbFile, 'utf-8'));
-  // Otomatis timpa database lama jika masih memakai format tahun 2021-2026
   if (!parsed.years || !parsed.years.includes('2018')) {
     fs.writeFileSync(dbFile, JSON.stringify(INITIAL_DB, null, 2), 'utf-8');
     return INITIAL_DB;
@@ -482,11 +482,16 @@ app.put('/api/sectors', requireAuth, (req, res) => {
   res.status(400).json({ error: 'Data sektor tidak valid' });
 });
 
-app.listen(PORT, () => {
-  readDB();
-  console.log(`====================================================`);
-  console.log(`SERVER AKTIF! Buka alamat ini di browser Anda:`);
-  console.log(`Web Publik  : http://localhost:${PORT}`);
-  console.log(`Panel Admin : http://localhost:${PORT}/admin.html`);
-  console.log(`====================================================`);
-});
+// Jalankan server hanya jika dieksekusi langsung (lokal), dan export app untuk Vercel
+if (require.main === module) {
+  app.listen(PORT, () => {
+    readDB();
+    console.log(`====================================================`);
+    console.log(`SERVER AKTIF! Buka alamat ini di browser Anda:`);
+    console.log(`Web Publik  : http://localhost:${PORT}`);
+    console.log(`Panel Admin : http://localhost:${PORT}/admin.html`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = app;

@@ -19,14 +19,14 @@
         <p class="text-xs text-slate-500 mt-1">Masuk untuk mengelola data & grafik indikator strategis</p>
       </div>
 
-      <form id="loginForm" class="space-y-4">
+      <form id="loginForm" class="space-y-4" autocomplete="off">
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Username Admin</label>
-          <input id="username" type="text" value="admin1501" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
+          <input id="username" type="text" placeholder="Masukkan username admin" autocomplete="off" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
         </div>
         <div>
           <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Password</label>
-          <input id="password" type="password" value="bpskerinci1501" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
+          <input id="password" type="password" placeholder="Masukkan password" autocomplete="new-password" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
         </div>
         <p id="loginError" class="text-xs text-red-600 font-semibold hidden"></p>
         <button type="submit" class="w-full py-3 rounded-xl btn-bps-blue font-bold text-sm shadow-md">Masuk ke Dashboard Admin</button>
@@ -84,6 +84,7 @@
                 <option value="Ketenagakerjaan">Ketenagakerjaan</option>
                 <option value="Kemiskinan">Kemiskinan</option>
                 <option value="IPM">IPM (Indeks Pembangunan Manusia)</option>
+                <option value="Pendidikan (APS)">Pendidikan (APS)</option>
                 <option value="PDRB">PDRB & Pertumbuhan Ekonomi</option>
                 <option value="Inflasi">Inflasi / Indeks Harga</option>
                 <option value="__custom__">+ Kategori Lainnya (Ketik Manual)</option>
@@ -103,7 +104,7 @@
             <!-- Satuan (Otomatis terisi sesuai indikator, tetap bisa diedit) -->
             <div>
               <label class="block text-xs font-bold text-slate-600 mb-1">Satuan <span class="text-[10px] font-normal text-sky-600">(Otomatis)</span></label>
-              <input id="fSatuan" type="text" placeholder="Contoh: Persen / Poin / Ribu Jiwa" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
+              <input id="fSatuan" type="text" placeholder="Contoh: Persen / Poin / Jiwa" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
             </div>
 
             <!-- Keterangan Perubahan / Delta (Otomatis dihitung dari 2 tahun terakhir) -->
@@ -133,7 +134,7 @@
             </div>
 
             <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-600 mb-2">Nilai Data Per Tahun (Gunakan titik `.` untuk desimal, misal `73.52`)</label>
+              <label class="block text-xs font-bold text-slate-600 mb-2">Nilai Data Per Tahun (Gunakan titik `.` untuk desimal, kosongkan jika data belum tersedia)</label>
               <div id="valueInputsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
             </div>
 
@@ -202,36 +203,47 @@
     // =========================================================================
     const INDICATOR_CATALOG = {
       'Kependudukan': [
-        { nama: 'Jumlah Penduduk', satuan: 'Ribu Jiwa', color: '#002B49', chart_type: 'bar', goodDirection: 'up' },
-        { nama: 'Laju Pertumbuhan Penduduk', satuan: 'Persen', color: '#005A9C', chart_type: 'line', goodDirection: 'neutral' },
-        { nama: 'Kepadatan Penduduk', satuan: 'Jiwa/Km²', color: '#0093DD', chart_type: 'bar', goodDirection: 'neutral' },
-        { nama: 'Rasio Jenis Kelamin (Sex Ratio)', satuan: 'Persen', color: '#0284C7', chart_type: 'line', goodDirection: 'neutral' }
+        { nama: 'Jumlah Penduduk', satuan: 'Jiwa', color: '#002B49', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Jumlah Penduduk Laki-laki', satuan: 'Jiwa', color: '#005A9C', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Jumlah Penduduk Perempuan', satuan: 'Jiwa', color: '#0093DD', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Rasio Jenis Kelamin (Sex Ratio)', satuan: 'Persen', color: '#0284C7', chart_type: 'line', goodDirection: 'neutral' },
+        { nama: 'Indeks Ketimpangan Gender (IKG)', satuan: 'Indeks', color: '#68B92E', chart_type: 'line', goodDirection: 'down' },
+        { nama: 'Gini Rasio', satuan: 'Indeks', color: '#F58220', chart_type: 'line', goodDirection: 'down' },
+        { nama: 'Laju Pertumbuhan Penduduk', satuan: 'Persen', color: '#005A9C', chart_type: 'line', goodDirection: 'neutral' }
       ],
       'Ketenagakerjaan': [
-        { nama: 'Tingkat Pengangguran Terbuka (TPT)', satuan: 'Persen', color: '#0093DD', chart_type: 'line', goodDirection: 'down' },
         { nama: 'Tingkat Partisipasi Angkatan Kerja (TPAK)', satuan: 'Persen', color: '#005A9C', chart_type: 'line', goodDirection: 'up' },
-        { nama: 'Jumlah Angkatan Kerja', satuan: 'Ribu Jiwa', color: '#002B49', chart_type: 'bar', goodDirection: 'up' },
-        { nama: 'Penduduk Bekerja', satuan: 'Ribu Jiwa', color: '#68B92E', chart_type: 'bar', goodDirection: 'up' }
+        { nama: 'Tingkat Pengangguran Terbuka (TPT)', satuan: 'Persen', color: '#0093DD', chart_type: 'line', goodDirection: 'down' },
+        { nama: 'Rasio Ketergantungan', satuan: 'Persen', color: '#0284C7', chart_type: 'line', goodDirection: 'down' },
+        { nama: 'Penduduk Bekerja', satuan: 'Jiwa', color: '#68B92E', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Jumlah Pengangguran', satuan: 'Jiwa', color: '#F58220', chart_type: 'bar', goodDirection: 'down' },
+        { nama: 'Jumlah Angkatan Kerja', satuan: 'Jiwa', color: '#002B49', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Bukan Angkatan Kerja', satuan: 'Jiwa', color: '#64748B', chart_type: 'bar', goodDirection: 'neutral' }
       ],
       'Kemiskinan': [
+        { nama: 'Garis Kemiskinan', satuan: 'Rp/Kapita/Bulan', color: '#D97706', chart_type: 'bar', goodDirection: 'neutral' },
         { nama: 'Persentase Penduduk Miskin (P0)', satuan: 'Persen', color: '#F58220', chart_type: 'line', goodDirection: 'down' },
-        { nama: 'Jumlah Penduduk Miskin', satuan: 'Ribu Jiwa', color: '#EA580C', chart_type: 'bar', goodDirection: 'down' },
-        { nama: 'Garis Kemiskinan', satuan: 'Rp/Kapita/Bulan', color: '#D97706', chart_type: 'line', goodDirection: 'neutral' },
         { nama: 'Indeks Kedalaman Kemiskinan (P1)', satuan: 'Poin', color: '#F59E0B', chart_type: 'line', goodDirection: 'down' },
-        { nama: 'Indeks Keparahan Kemiskinan (P2)', satuan: 'Poin', color: '#B45309', chart_type: 'line', goodDirection: 'down' }
+        { nama: 'Indeks Keparahan Kemiskinan (P2)', satuan: 'Poin', color: '#B45309', chart_type: 'line', goodDirection: 'down' },
+        { nama: 'Jumlah Penduduk Miskin', satuan: 'Ribu Jiwa', color: '#EA580C', chart_type: 'bar', goodDirection: 'down' }
       ],
       'IPM': [
         { nama: 'Indeks Pembangunan Manusia (IPM)', satuan: 'Poin', color: '#005A9C', chart_type: 'line', goodDirection: 'up' },
-        { nama: 'Umur Harapan Hidup saat Lahir (UHH)', satuan: 'Tahun', color: '#0093DD', chart_type: 'line', goodDirection: 'up' },
+        { nama: 'Umur Harapan Hidup (UHH)', satuan: 'Tahun', color: '#0093DD', chart_type: 'line', goodDirection: 'up' },
         { nama: 'Harapan Lama Sekolah (HLS)', satuan: 'Tahun', color: '#68B92E', chart_type: 'line', goodDirection: 'up' },
         { nama: 'Rata-rata Lama Sekolah (RLS)', satuan: 'Tahun', color: '#0284C7', chart_type: 'line', goodDirection: 'up' },
-        { nama: 'Pengeluaran Riil per Kapita Disesuaikan', satuan: 'Ribu Rp/Tahun', color: '#002B49', chart_type: 'bar', goodDirection: 'up' }
+        { nama: 'Pengeluaran per Kapita Disesuaikan', satuan: 'Ribu Rupiah', color: '#002B49', chart_type: 'bar', goodDirection: 'up' }
+      ],
+      'Pendidikan (APS)': [
+        { nama: 'Angka Partisipasi Sekolah (APS) 7-12 Tahun', satuan: 'Persen', color: '#005A9C', chart_type: 'line', goodDirection: 'up' },
+        { nama: 'Angka Partisipasi Sekolah (APS) 13-15 Tahun', satuan: 'Persen', color: '#0093DD', chart_type: 'line', goodDirection: 'up' },
+        { nama: 'Angka Partisipasi Sekolah (APS) 16-18 Tahun', satuan: 'Persen', color: '#68B92E', chart_type: 'line', goodDirection: 'up' }
       ],
       'PDRB': [
-        { nama: 'Laju Pertumbuhan Ekonomi (ADHK)', satuan: 'Persen', color: '#68B92E', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Pertumbuhan Ekonomi', satuan: 'Persen', color: '#68B92E', chart_type: 'bar', goodDirection: 'up' },
         { nama: 'PDRB Atas Dasar Harga Berlaku (ADHB)', satuan: 'Miliar Rupiah', color: '#005A9C', chart_type: 'bar', goodDirection: 'up' },
         { nama: 'PDRB Atas Dasar Harga Konstan (ADHK)', satuan: 'Miliar Rupiah', color: '#0093DD', chart_type: 'bar', goodDirection: 'up' },
-        { nama: 'PDRB per Kapita ADHB', satuan: 'Juta Rupiah', color: '#002B49', chart_type: 'line', goodDirection: 'up' }
+        { nama: 'PDRB ADHB Per Kapita', satuan: 'Juta Rupiah', color: '#002B49', chart_type: 'line', goodDirection: 'up' }
       ],
       'Inflasi': [
         { nama: 'Perkembangan IPH / Indikator Harga', satuan: 'Persen', color: '#0284C7', chart_type: 'line', goodDirection: 'neutral' },
@@ -292,7 +304,6 @@
         updateLivePreview();
       });
 
-      // Inisialisasi pilihan awal
       populateIndicatorDropdown(catSelect.value);
     }
 
@@ -344,34 +355,37 @@
 
     function recalculateDelta() {
       if (!currentData || currentData.years.length < 2) return;
-      const lastIdx = currentData.years.length - 1;
-      const prevIdx = lastIdx - 1;
 
-      const elLast = document.getElementById(`val_${lastIdx}`);
-      const elPrev = document.getElementById(`val_${prevIdx}`);
-      if (!elLast || !elPrev) return;
+      // Cari 2 indeks tahun terakhir yang memiliki angka valid (bukan kosong)
+      const validPoints = [];
+      for (let i = currentData.years.length - 1; i >= 0; i--) {
+        const el = document.getElementById(`val_${i}`);
+        if (el && el.value !== '' && !isNaN(parseFloat(el.value))) {
+          validPoints.unshift({ val: parseFloat(el.value), year: currentData.years[i] });
+          if (validPoints.length === 2) break;
+        }
+      }
 
-      const valLast = parseFloat(elLast.value);
-      const valPrev = parseFloat(elPrev.value);
-      if (isNaN(valLast) || isNaN(valPrev)) return;
+      if (validPoints.length < 2) return;
 
-      const diff = valLast - valPrev;
+      const prevPoint = validPoints[0];
+      const lastPoint = validPoints[1];
+      const diff = lastPoint.val - prevPoint.val;
       const absDiff = Math.abs(diff).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const sign = diff > 0 ? '+' : (diff < 0 ? '-' : '');
       const satuan = (document.getElementById('fSatuan').value || '').toLowerCase();
-      const prevYear = currentData.years[prevIdx];
 
       let unitLabel = satuan.includes('persen') ? 'poin persen' : (satuan.includes('poin') ? 'poin' : satuan);
       let statusText = '';
 
       if (diff === 0) {
-        statusText = 'Stabil';
+        statusText = `Stabil dibanding ${prevPoint.year}`;
       } else if (activeGoodDirection === 'down') {
-        statusText = diff < 0 ? 'Menurun / Membaik' : 'Meningkat';
+        statusText = diff < 0 ? `Menurun dibanding ${prevPoint.year}` : `Meningkat dibanding ${prevPoint.year}`;
       } else if (activeGoodDirection === 'up') {
-        statusText = diff > 0 ? 'Meningkat' : 'Menurun';
+        statusText = diff > 0 ? `Meningkat dibanding ${prevPoint.year}` : `Menurun dibanding ${prevPoint.year}`;
       } else {
-        statusText = `dibanding ${prevYear}`;
+        statusText = `dibanding ${prevPoint.year}`;
       }
 
       document.getElementById('fDelta').value = `${sign}${absDiff} ${unitLabel} (${statusText})`.trim();
@@ -392,7 +406,7 @@
     // =========================================================================
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('username').value;
+      const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
       const errEl = document.getElementById('loginError');
 
@@ -441,7 +455,7 @@
       document.getElementById('valueInputsGrid').innerHTML = currentData.years.map((y, idx) => `
         <div>
           <span class="block text-[11px] font-bold text-slate-500 mb-1">Tahun ${y}</span>
-          <input type="number" step="any" id="val_${idx}" value="${(idx + 1) * 10}" required oninput="onValueInput()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono">
+          <input type="number" step="any" id="val_${idx}" placeholder="-" oninput="onValueInput()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono">
         </div>
       `).join('');
 
@@ -456,7 +470,7 @@
 
       document.getElementById('adminTableBody').innerHTML = currentData.indicators.map(item => `
         <tr class="hover:bg-slate-50">
-          <td class="py-3 px-4 font-semibold">${item.kategori}</td>
+          <td class="py-3 px-4 font-semibold whitespace-nowrap">${item.kategori}</td>
           <td class="py-3 px-4">
             <div class="font-semibold text-slate-900">${item.nama} <span class="text-xs font-normal text-slate-400">(${item.satuan})</span></div>
             <div class="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-500">
@@ -464,7 +478,7 @@
               <span>Grafik: <strong>${item.chart_type === 'bar' ? 'Batang' : 'Garis'}</strong></span>
             </div>
           </td>
-          ${item.values.map(v => `<td class="py-3 px-3 text-right font-mono">${v}</td>`).join('')}
+          ${item.values.map(v => `<td class="py-3 px-3 text-right font-mono">${v === null || v === undefined ? '-' : v}</td>`).join('')}
           <td class="py-3 px-4 text-right space-x-2 whitespace-nowrap">
             <button onclick="editItem('${item.id}')" class="px-2.5 py-1 rounded bg-sky-100 text-[#005A9C] text-xs font-bold hover:bg-sky-200">Edit</button>
             <button onclick="deleteItem('${item.id}')" class="px-2.5 py-1 rounded bg-red-100 text-red-600 text-xs font-bold hover:bg-red-200">Hapus</button>
@@ -495,7 +509,9 @@
 
       const values = currentData.years.map((_, idx) => {
         const el = document.getElementById(`val_${idx}`);
-        return el ? parseFloat(el.value) || 0 : 0;
+        if (!el || el.value === '') return null;
+        const parsed = parseFloat(el.value);
+        return isNaN(parsed) ? null : parsed;
       });
 
       const ctx = document.getElementById('adminPreviewChart').getContext('2d');
@@ -513,6 +529,7 @@
             borderWidth: 3,
             fill: chartType === 'line',
             tension: 0.35,
+            spanGaps: true,
             borderRadius: chartType === 'bar' ? 6 : 0
           }]
         },
@@ -541,7 +558,10 @@
     document.getElementById('indicatorForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const editId = document.getElementById('editId').value;
-      const values = currentData.years.map((_, idx) => parseFloat(document.getElementById(`val_${idx}`).value));
+      const values = currentData.years.map((_, idx) => {
+        const raw = document.getElementById(`val_${idx}`).value;
+        return raw === '' ? null : parseFloat(raw);
+      });
 
       const payload = {
         kategori: getResolvedCategory(),
@@ -606,7 +626,7 @@
 
       item.values.forEach((v, idx) => {
         const el = document.getElementById(`val_${idx}`);
-        if (el) el.value = v;
+        if (el) el.value = (v === null || v === undefined) ? '' : v;
       });
 
       updateLivePreview();

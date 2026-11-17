@@ -2,20 +2,60 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const IS_PROD = process.env.NODE_ENV === 'production';
+const TOKEN_TTL_MS = 12 * 60 * 60 * 1000; // 12 jam
+const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 menit
+const LOGIN_MAX_ATTEMPTS = 10;
+
+// Kredensial admin wajib dari env di production. Default hanya untuk pengembangan lokal.
+if (IS_PROD && (!process.env.ADMIN_USER || !process.env.ADMIN_PASS)) {
+  const msg = 'ADMIN_USER dan ADMIN_PASS wajib diisi saat NODE_ENV=production.';
+  if (require.main === module) {
+    console.error('[FATAL] ' + msg);
+    process.exit(1);
+  }
+  throw new Error(msg);
+}
 const ADMIN_USERNAME = process.env.ADMIN_USER || 'admin1501';
 const ADMIN_PASSWORD = process.env.ADMIN_PASS || 'bpskerinci1501';
-const activeTokens = new Set();
 
-app.use(express.json());
+// token -> waktu kedaluwarsa (ms epoch). Disimpan di memori.
+const activeTokens = new Map();
+// ip -> { count, resetAt } untuk percobaan login gagal.
+const loginAttempts = new Map();
+
+// Di belakang proxy Render/Vercel agar req.ip berisi IP klien asli.
+if (IS_PROD || process.env.RENDER || process.env.VERCEL) app.set('trust proxy', 1);
+
+app.use(express.json({ limit: '200kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Gunakan /tmp/data saat berjalan di Vercel (serverless), dan folder ./data saat lokal
-const dataDir = process.env.VERCEL ? '/tmp/data' : path.join(__dirname, 'data');
+// Folder data: ./data saat lokal. Di Vercel/Render filesystem bersifat sementara
+// (reset saat restart/deploy), jadi pakai direktori temp.
+const dataDir =
+  process.env.VERCEL || process.env.RENDER
+    ? path.join(os.tmpdir(), 'data')
+    : path.join(__dirname, 'data');
 const dbFile = path.join(dataDir, 'diksi_1501.json');
+
+// Bandingkan string dengan waktu konstan (hash dulu agar panjang sama).
+function safeEqual(a, b) {
+  const ha = crypto.createHash('sha256').update(String(a)).digest();
+  const hb = crypto.createHash('sha256').update(String(b)).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
+
+// Bersihkan token kedaluwarsa dan catatan rate limit lama secara berkala.
+setInterval(() => {
+  const now = Date.now();
+  for (const [t, exp] of activeTokens) if (exp <= now) activeTokens.delete(t);
+  for (const [ip, rec] of loginAttempts) if (rec.resetAt <= now) loginAttempts.delete(ip);
+}, 10 * 60 * 1000).unref();
 
 // Seluruh Indikator & Sub-Indikator Data Strategis Kabupaten Kerinci (2018-2026)
 const INITIAL_DB = {
@@ -382,40 +422,139 @@ const INITIAL_DB = {
   ]
 };
 
+// Buat data awal sekali saja (file belum ada). Data yang sudah tersimpan tidak pernah ditimpa.
 function readDB() {
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
   if (!fs.existsSync(dbFile)) {
-    fs.writeFileSync(dbFile, JSON.stringify(INITIAL_DB, null, 2), 'utf-8');
-    return INITIAL_DB;
+    const seed = JSON.parse(JSON.stringify(INITIAL_DB));
+    writeFileAtomic(seed);
+    return seed;
   }
-  const parsed = JSON.parse(fs.readFileSync(dbFile, 'utf-8'));
-  if (!parsed.years || !parsed.years.includes('2018')) {
-    fs.writeFileSync(dbFile, JSON.stringify(INITIAL_DB, null, 2), 'utf-8');
-    return INITIAL_DB;
-  }
-  return parsed;
+  return JSON.parse(fs.readFileSync(dbFile, 'utf-8'));
+}
+
+function writeFileAtomic(data) {
+  const tmp = dbFile + '.' + process.pid + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2), 'utf-8');
+  fs.renameSync(tmp, dbFile);
 }
 
 function writeDB(data) {
   data.lastUpdated = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
-  fs.writeFileSync(dbFile, JSON.stringify(data, null, 2), 'utf-8');
+  writeFileAtomic(data);
 }
 
 function requireAuth(req, res, next) {
-  const token = (req.headers.authorization || '').replace('Bearer ', '');
-  if (!activeTokens.has(token)) return res.status(401).json({ error: 'Sesi tidak valid.' });
+  const m = /^Bearer\s+(.+)$/i.exec(req.headers.authorization || '');
+  const token = m ? m[1].trim() : '';
+  const exp = activeTokens.get(token);
+  if (!exp || exp <= Date.now()) {
+    activeTokens.delete(token);
+    return res.status(401).json({ error: 'Sesi tidak valid.' });
+  }
   next();
+}
+
+// ==================== VALIDASI INPUT ====================
+
+const isStr = (v) => typeof v === 'string';
+const isNonEmptyStr = (v, max = 200) => isStr(v) && v.trim().length > 0 && v.length <= max;
+const CHART_TYPES = ['bar', 'line'];
+const MAX_POINTS = 50;
+
+function normalizeValues(values) {
+  if (!Array.isArray(values) || values.length === 0 || values.length > MAX_POINTS) return null;
+  const out = [];
+  for (const v of values) {
+    if (v === null || v === undefined || v === '') {
+      out.push(null);
+    } else if (typeof v === 'number' || (isStr(v) && v.trim() !== '')) {
+      const n = Number(v);
+      out.push(Number.isFinite(n) ? n : null);
+    } else {
+      return null;
+    }
+  }
+  return out;
+}
+
+// Validasi field indikator. Mengembalikan { error } atau { data } berisi field yang sudah bersih.
+// partial=true (PUT): field boleh tidak ada, tapi kalau ada harus valid.
+function parseIndicator(body, partial) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { error: 'Body tidak valid.' };
+  const data = {};
+  const req = (k) => !partial || body[k] !== undefined;
+
+  for (const k of ['kategori', 'nama', 'satuan']) {
+    if (req(k)) {
+      if (!isNonEmptyStr(body[k])) return { error: `Field "${k}" wajib berupa teks.` };
+      data[k] = body[k].trim();
+    }
+  }
+  if (body.delta !== undefined && body.delta !== null) {
+    if (!isStr(body.delta) || body.delta.length > 300) return { error: 'Field "delta" tidak valid.' };
+    data.delta = body.delta.trim();
+  }
+  if (body.insight !== undefined && body.insight !== null) {
+    if (!isStr(body.insight) || body.insight.length > 2000) return { error: 'Field "insight" tidak valid.' };
+    data.insight = body.insight.trim();
+  }
+  if (body.chart_type !== undefined && body.chart_type !== null) {
+    if (!CHART_TYPES.includes(body.chart_type)) return { error: 'Field "chart_type" harus bar atau line.' };
+    data.chart_type = body.chart_type;
+  }
+  if (body.color !== undefined && body.color !== null) {
+    if (!isStr(body.color) || !/^#[0-9a-fA-F]{3,8}$/.test(body.color)) return { error: 'Field "color" harus kode warna hex.' };
+    data.color = body.color;
+  }
+  if (req('values')) {
+    const values = normalizeValues(body.values);
+    if (!values) return { error: 'Field "values" harus array angka (maks. ' + MAX_POINTS + ').' };
+    data.values = values;
+  }
+  return { data };
+}
+
+function parseSectors(sectors) {
+  if (!Array.isArray(sectors) || sectors.length === 0 || sectors.length > 30) return null;
+  const out = [];
+  for (const s of sectors) {
+    if (!s || typeof s !== 'object') return null;
+    const value = Number(s.value);
+    if (!isNonEmptyStr(s.label) || !Number.isFinite(value)) return null;
+    if (s.color !== undefined && (!isStr(s.color) || !/^#[0-9a-fA-F]{3,8}$/.test(s.color))) return null;
+    out.push({ label: s.label.trim(), value, color: s.color || '#94a3b8' });
+  }
+  return out;
 }
 
 // ==================== API ENDPOINTS ====================
 
+app.get('/healthz', (req, res) => res.status(200).type('text/plain').send('ok'));
+
 app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+  const now = Date.now();
+  const ip = req.ip || 'unknown';
+  let rec = loginAttempts.get(ip);
+  if (!rec || rec.resetAt <= now) rec = { count: 0, resetAt: now + LOGIN_WINDOW_MS };
+
+  if (rec.count >= LOGIN_MAX_ATTEMPTS) {
+    res.set('Retry-After', String(Math.ceil((rec.resetAt - now) / 1000)));
+    return res.status(429).json({ success: false, error: 'Terlalu banyak percobaan login. Coba lagi nanti.' });
+  }
+
+  const { username, password } = req.body || {};
+  const okUser = isStr(username) && safeEqual(username, ADMIN_USERNAME);
+  const okPass = isStr(password) && safeEqual(password, ADMIN_PASSWORD);
+  if (okUser && okPass) {
+    loginAttempts.delete(ip);
     const token = crypto.randomBytes(24).toString('hex');
-    activeTokens.add(token);
+    activeTokens.set(token, now + TOKEN_TTL_MS);
     return res.json({ success: true, token });
   }
+
+  rec.count += 1;
+  loginAttempts.set(ip, rec);
   return res.status(401).json({ success: false, error: 'Username atau password salah!' });
 });
 
@@ -424,33 +563,32 @@ app.get('/api/dashboard', (req, res) => {
 });
 
 app.post('/api/indicators', requireAuth, (req, res) => {
+  const { error, data } = parseIndicator(req.body, false);
+  if (error) return res.status(400).json({ error });
   const db = readDB();
-  const { kategori, nama, satuan, delta, chart_type, color, insight, values } = req.body;
   db.indicators.push({
-    id: 'ind_' + Date.now(),
-    kategori,
-    nama,
-    satuan,
-    delta: delta || 'Data terbaru BPS',
-    chart_type: chart_type || 'line',
-    color: color || '#005A9C',
-    insight: insight || '',
-    values: values.map(v => (v === null || v === '' || isNaN(v) ? null : Number(v)))
+    id: 'ind_' + Date.now() + '_' + crypto.randomBytes(2).toString('hex'),
+    kategori: data.kategori,
+    nama: data.nama,
+    satuan: data.satuan,
+    delta: data.delta || 'Data terbaru BPS',
+    chart_type: data.chart_type || 'line',
+    color: data.color || '#005A9C',
+    insight: data.insight || '',
+    values: data.values
   });
   writeDB(db);
   res.json({ success: true });
 });
 
 app.put('/api/indicators/:id', requireAuth, (req, res) => {
+  const { error, data } = parseIndicator(req.body, true);
+  if (error) return res.status(400).json({ error });
   const db = readDB();
   const idx = db.indicators.findIndex(i => i.id === req.params.id);
   if (idx === -1) return res.status(404).json({ error: 'Data tidak ditemukan' });
 
-  db.indicators[idx] = {
-    ...db.indicators[idx],
-    ...req.body,
-    values: req.body.values.map(v => (v === null || v === '' || isNaN(v) ? null : Number(v)))
-  };
+  db.indicators[idx] = { ...db.indicators[idx], ...data };
   writeDB(db);
   res.json({ success: true });
 });
@@ -463,9 +601,13 @@ app.delete('/api/indicators/:id', requireAuth, (req, res) => {
 });
 
 app.put('/api/years', requireAuth, (req, res) => {
-  const db = readDB();
-  if (Array.isArray(req.body.years) && req.body.years.length >= 2) {
-    db.years = req.body.years;
+  const years = req.body && req.body.years;
+  if (
+    Array.isArray(years) && years.length >= 2 && years.length <= MAX_POINTS &&
+    years.every(y => (isStr(y) || typeof y === 'number') && String(y).trim() !== '' && String(y).length <= 20)
+  ) {
+    const db = readDB();
+    db.years = years.map(String);
     writeDB(db);
     return res.json({ success: true });
   }
@@ -473,13 +615,21 @@ app.put('/api/years', requireAuth, (req, res) => {
 });
 
 app.put('/api/sectors', requireAuth, (req, res) => {
-  const db = readDB();
-  if (Array.isArray(req.body.sectors)) {
-    db.sectors = req.body.sectors;
+  const sectors = parseSectors(req.body && req.body.sectors);
+  if (sectors) {
+    const db = readDB();
+    db.sectors = sectors;
     writeDB(db);
     return res.json({ success: true });
   }
   res.status(400).json({ error: 'Data sektor tidak valid' });
+});
+
+// Penanganan error: JSON rusak / body terlalu besar -> 4xx, selain itu 500.
+app.use((err, req, res, next) => {
+  const status = err.status && err.status >= 400 && err.status < 500 ? err.status : 500;
+  if (status === 500) console.error(err);
+  res.status(status).json({ error: status === 500 ? 'Terjadi kesalahan server.' : 'Permintaan tidak valid.' });
 });
 
 // Jalankan server hanya jika dieksekusi langsung (lokal), dan export app untuk Vercel

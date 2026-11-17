@@ -1,0 +1,13 @@
+{
+  "name": "diksi-1501-bps-kerinci",
+  "version": "1.0.0",
+  "description": "Dashboard Indikator Data Strategis Kabupaten Kerinci (SQLite + VS Code)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+
+    "express": "^4.19.2"
+  }
+}

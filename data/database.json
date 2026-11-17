@@ -1,0 +1,154 @@
+{
+  "lastUpdated": "2026-11-16",
+  "years": [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
+  "indicators": [
+    {
+      "id": "penduduk",
+      "kategori": "Kependudukan",
+      "nama": "Jumlah Penduduk",
+      "satuan": "Ribu Jiwa",
+      "delta": "+0,52% dari tahun sebelumnya",
+      "trend": "up",
+      "color": "#002B49",
+      "icon": "users",
+      "insight": "Jumlah penduduk Kabupaten Kerinci bertambah secara moderat sekitar 0,5% per tahun, tersebar di 18 kecamatan dengan konsentrasi tertinggi di wilayah Siulak, Kayu Aro, dan Gunung Kerinci.",
+      "values": [
+        251.55,
+        252.88,
+        254.21,
+        255.52,
+        256.84,
+        258.18
+      ]
+    },
+    {
+      "id": "tpt",
+      "kategori": "Ketenagakerjaan",
+      "nama": "Tingkat Pengangguran Terbuka (TPT)",
+      "satuan": "Persen",
+      "delta": "-0,13 poin persen (Membaik)",
+      "trend": "good-down",
+      "color": "#0093DD",
+      "icon": "briefcase",
+      "insight": "Tingkat Pengangguran Terbuka di Kabupaten Kerinci relatif rendah dibanding rata-rata provinsi dan terus menurun seiring meningkatnya aktivitas sektor pertanian dan perdagangan lokal.",
+      "values": [
+        2.89,
+        2.64,
+        2.43,
+        2.28,
+        2.15,
+        2.02
+      ]
+    },
+    {
+      "id": "kemiskinan",
+      "kategori": "Kemiskinan",
+      "nama": "Persentase Penduduk Miskin (P0)",
+      "satuan": "Persen",
+      "delta": "-0,19 poin persen (Menurun)",
+      "trend": "good-down",
+      "color": "#F58220",
+      "icon": "heart-handshake",
+      "insight": "Tingkat kemiskinan di Kabupaten Kerinci terus berhasil ditekan secara konsisten hingga mencapai 7,05% pada rilis terbaru.",
+      "values": [
+        8.12,
+        7.84,
+        7.59,
+        7.41,
+        7.24,
+        7.05
+      ]
+    },
+    {
+      "id": "ipm",
+      "kategori": "IPM",
+      "nama": "Indeks Pembangunan Manusia (IPM)",
+      "satuan": "Poin",
+      "delta": "+0,34 poin (Kategori Tinggi)",
+      "trend": "up",
+      "color": "#005A9C",
+      "icon": "graduation-cap",
+      "insight": "IPM Kabupaten Kerinci konsisten meningkat setiap tahun dan berada pada kategori Tinggi (>70), didorong peningkatan rata-rata lama sekolah dan pengeluaran riil per kapita.",
+      "values": [
+        71.48,
+        72.02,
+        72.54,
+        72.89,
+        73.18,
+        73.52
+      ]
+    },
+    {
+      "id": "pdrb_growth",
+      "kategori": "PDRB",
+      "nama": "Laju Pertumbuhan Ekonomi (ADHK)",
+      "satuan": "Persen",
+      "delta": "+0,09 poin persen (Ekspansi Stabil)",
+      "trend": "up",
+      "color": "#68B92E",
+      "icon": "trending-up",
+      "insight": "Perekonomian Kerinci tumbuh solid di kisaran 4,91%, ditopang oleh sektor unggulan Pertanian, Kehutanan, dan Perikanan (hortikultura, kayu manis, teh, dan kopi).",
+      "values": [
+        3.68,
+        4.52,
+        4.63,
+        4.75,
+        4.82,
+        4.91
+      ]
+    },
+    {
+      "id": "inflasi",
+      "kategori": "Inflasi",
+      "nama": "Perkembangan IPH / Indikator Harga",
+      "satuan": "Persen",
+      "delta": "Terkendali dalam rentang sasaran",
+      "trend": "neutral",
+      "color": "#0284C7",
+      "icon": "shopping-basket",
+      "insight": "Stabilitas harga komoditas pangan utama (cabai merah, beras, bawang merah) terjaga baik melalui sinergi TPID Kabupaten Kerinci dan pemantauan harga perdesaan.",
+      "values": [
+        2.15,
+        4.35,
+        2.68,
+        2.1,
+        1.84,
+        1.76
+      ]
+    }
+  ],
+  "sectors": [
+    {
+      "label": "Pertanian, Kehutanan & Perikanan",
+      "value": 48.6,
+      "color": "#68B92E"
+    },
+    {
+      "label": "Perdagangan Besar & Eceran",
+      "value": 14.25,
+      "color": "#005A9C"
+    },
+    {
+      "label": "Konstruksi",
+      "value": 9.8,
+      "color": "#0093DD"
+    },
+    {
+      "label": "Administrasi Pemerintahan",
+      "value": 8.45,
+      "color": "#F58220"
+    },
+    {
+      "label": "Lapangan Usaha Lainnya",
+      "value": 18.9,
+      "color": "#94a3b8"
+    }
+  ]
+}

@@ -6,16 +6,17 @@
   <title>Admin Backend | DIKSI 1501 BPS Kabupaten Kerinci</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
 
   <!-- LOGIN VIEW -->
   <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 hero-bg">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 space-y-6">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 space-y-6">
       <div class="text-center">
         <span class="inline-block px-3 py-1 rounded-full bg-sky-100 text-[#005A9C] text-xs font-bold mb-2">BPS KABUPATEN KERINCI (1501)</span>
-        <h1 class="text-2xl font-extrabold text-slate-900">Panel Admin DIKSI</h1>
+        <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Panel Admin DIKSI</h1>
         <p class="text-xs text-slate-500 mt-1">Masuk untuk mengelola data & grafik indikator strategis</p>
       </div>
 
@@ -41,45 +42,43 @@
   <!-- ADMIN DASHBOARD VIEW -->
   <div id="adminDashboard" class="hidden">
     <header class="hero-bg text-white shadow-md sticky top-0 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span class="font-extrabold text-lg">ADMIN DIKSI <span class="text-sky-300">1501</span></span>
-          <span class="hidden sm:inline-block text-xs bg-white/15 px-2.5 py-0.5 rounded">Update Data & Grafik</span>
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-extrabold text-base sm:text-lg truncate">ADMIN DIKSI <span class="text-sky-300">1501</span></span>
         </div>
-        <div class="flex items-center gap-3">
-          <a href="index.html" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shadow">Lihat Web Publik ↗</a>
-          <button id="logoutBtn" class="px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-xs font-semibold">Keluar</button>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="index.html" target="_blank" class="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shadow">Web Publik ↗</a>
+          <button id="logoutBtn" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-xs font-semibold">Keluar</button>
         </div>
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
       
       <!-- 1. Pengaturan Tahun Kolom -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-        <h2 class="font-bold text-lg text-slate-900">1. Pengaturan Seri Tahun (Sumbu X Grafik & Kolom Tabel)</h2>
-        <p class="text-xs text-slate-500 mb-4">Ubah label tahun yang tampil di grafik tren dan tabel publik.</p>
-        <form id="yearsForm" class="flex flex-wrap items-center gap-2.5">
-          <div id="yearInputs" class="flex flex-wrap gap-2"></div>
-          <button type="submit" class="px-4 py-2 rounded-xl btn-bps-blue text-xs font-bold">Simpan Perubahan Tahun</button>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+        <h2 class="font-bold text-base sm:text-lg text-slate-900">1. Pengaturan Seri Tahun (Indikator Tahunan)</h2>
+        <p class="text-xs text-slate-500 mb-3">Ubah label tahun yang tampil di grafik tren dan tabel publik.</p>
+        <form id="yearsForm" class="space-y-3">
+          <div id="yearInputs" class="grid grid-cols-3 sm:flex sm:flex-wrap gap-2"></div>
+          <button type="submit" class="w-full sm:w-auto px-4 py-2.5 rounded-xl btn-bps-blue text-xs font-bold">Simpan Perubahan Tahun</button>
         </form>
       </div>
 
       <!-- 2. Form Tambah / Edit Indikator & Live Preview Grafik -->
-      <div class="grid lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <div class="flex items-center justify-between mb-4">
-            <h2 id="formTitle" class="font-bold text-lg text-slate-900">2. Input / Edit Data & Pengaturan Grafik</h2>
-            <button id="cancelEditBtn" type="button" class="hidden px-3 py-1 rounded-lg bg-slate-100 text-xs font-bold text-slate-600 hover:bg-slate-200">Batal Edit</button>
+      <div class="grid lg:grid-cols-12 gap-5 sm:gap-6">
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <h2 id="formTitle" class="font-bold text-base sm:text-lg text-slate-900">2. Input / Edit Data & Grafik</h2>
+            <button id="cancelEditBtn" type="button" class="hidden px-3 py-1 rounded-lg bg-slate-100 text-xs font-bold text-slate-600 hover:bg-slate-200 shrink-0">Batal Edit</button>
           </div>
 
-          <form id="indicatorForm" class="grid sm:grid-cols-2 gap-4">
+          <form id="indicatorForm" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <input type="hidden" id="editId" />
 
-            <!-- Dropdown Kategori -->
             <div>
               <label class="block text-xs font-bold text-slate-600 mb-1">Kategori Indikator</label>
-              <select id="fKategoriSelect" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
+              <select id="fKategoriSelect" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
                 <option value="Kependudukan">Kependudukan</option>
                 <option value="Ketenagakerjaan">Ketenagakerjaan</option>
                 <option value="Kemiskinan">Kemiskinan</option>
@@ -92,25 +91,20 @@
               <input id="fKategoriCustom" type="text" placeholder="Ketik nama kategori baru..." class="hidden mt-2 w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
             </div>
 
-            <!-- Dropdown Nama Indikator (Dinamis mengikuti Kategori) -->
             <div>
               <label class="block text-xs font-bold text-slate-600 mb-1">Nama Indikator</label>
-              <select id="fNamaSelect" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
-                <!-- Diisi otomatis oleh JavaScript sesuai Kategori -->
-              </select>
+              <select id="fNamaSelect" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white"></select>
               <input id="fNamaCustom" type="text" placeholder="Ketik nama indikator baru..." class="hidden mt-2 w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
             </div>
 
-            <!-- Satuan (Otomatis terisi sesuai indikator, tetap bisa diedit) -->
             <div>
               <label class="block text-xs font-bold text-slate-600 mb-1">Satuan <span class="text-[10px] font-normal text-sky-600">(Otomatis)</span></label>
-              <input id="fSatuan" type="text" placeholder="Contoh: Persen / Poin / Jiwa" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
+              <input id="fSatuan" type="text" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
             </div>
 
-            <!-- Keterangan Perubahan / Delta (Otomatis dihitung dari 2 tahun terakhir) -->
             <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Keterangan Perubahan (Delta) <span class="text-[10px] font-normal text-sky-600">(Otomatis)</span></label>
-              <input id="fDelta" type="text" placeholder="Otomatis terhitung dari 2 tahun terakhir" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
+              <label class="block text-xs font-bold text-slate-600 mb-1">Keterangan Perubahan <span class="text-[10px] font-normal text-sky-600">(Otomatis)</span></label>
+              <input id="fDelta" type="text" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
             </div>
 
             <div>
@@ -121,7 +115,7 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Warna Garis / Batang Grafik</label>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Warna Grafik</label>
               <div class="flex items-center gap-2">
                 <input id="fColor" type="color" value="#005A9C" class="w-12 h-10 p-1 rounded-xl border border-slate-300 cursor-pointer">
                 <span id="colorHexLabel" class="text-xs font-mono text-slate-500">#005A9C</span>
@@ -130,66 +124,91 @@
 
             <div class="sm:col-span-2">
               <label class="block text-xs font-bold text-slate-600 mb-1">Catatan Analisis Singkat</label>
-              <textarea id="fInsight" rows="2" placeholder="Tuliskan narasi singkat perkembangan indikator..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm"></textarea>
+              <textarea id="fInsight" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm"></textarea>
             </div>
 
             <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-600 mb-2">Nilai Data Per Tahun (Gunakan titik `.` untuk desimal, kosongkan jika data belum tersedia)</label>
+              <label class="block text-xs font-bold text-slate-600 mb-2">Nilai Data Per Tahun</label>
               <div id="valueInputsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
             </div>
 
-            <div class="sm:col-span-2 flex justify-end pt-2">
-              <button type="submit" class="px-6 py-2.5 rounded-xl btn-bps-orange font-bold text-sm shadow">Simpan & Update ke Web Publik</button>
+            <div class="sm:col-span-2 pt-2">
+              <button type="submit" class="w-full sm:w-auto sm:float-right px-6 py-3 rounded-xl btn-bps-orange font-bold text-sm shadow">Simpan & Update ke Web Publik</button>
             </div>
           </form>
         </div>
 
         <!-- Live Preview Grafik -->
-        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-[#005A9C]">Pratinjau Grafik Langsung</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#005A9C]">Pratinjau Grafik</span>
               <span class="text-[11px] px-2 py-0.5 rounded bg-sky-50 text-[#005A9C] font-semibold">Live Preview</span>
             </div>
             <h3 id="previewTitle" class="font-bold text-base text-slate-900">Judul Indikator</h3>
             <p id="previewSubtitle" class="text-xs text-slate-500 mb-4">Satuan: -</p>
-            <div class="relative h-60 w-full">
+            <div class="relative h-56 sm:h-60 w-full">
               <canvas id="adminPreviewChart"></canvas>
             </div>
           </div>
           <p class="text-[11px] text-slate-400 mt-4 pt-3 border-t border-slate-100">
-            Perubahan indikator, satuan, angka tahunan, atau jenis grafik pada form langsung tampil pada pratinjau ini.
+            Perubahan indikator, satuan, angka tahunan, atau jenis grafik langsung tampil pada pratinjau ini.
           </p>
         </div>
       </div>
 
-      <!-- 3. Daftar Data Indikator -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-slate-200">
-          <h2 class="font-bold text-lg text-slate-900">3. Daftar Data & Grafik Indikator Tersimpan</h2>
+      <!-- 3. UPLOAD FILE EXCEL / CSV PDRB TRIWULANAN -->
+      <div class="bg-white rounded-2xl border-2 border-dashed border-[#0093DD] p-4 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span class="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-[#005A9C] text-[11px] font-bold mb-1">IMPORT OTOMATIS SPREADSHEET</span>
+            <h2 class="font-bold text-base sm:text-lg text-slate-900">3. Upload File PDRB Triwulanan (.xlsx / .xls / .csv)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Unggah langsung file Excel dari Google Sheets Anda (berisi tabel <strong>PDRB Triwulanan Lapangan Usaha</strong> & <strong>Pengeluaran</strong>, baik ADHB maupun ADHK). Sel yang ter-merge otomatis terbaca.
+            </p>
+          </div>
+          <div class="text-xs bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 shrink-0">
+            Data tersimpan saat ini: <strong id="pdrbTriwulanCount" class="text-[#005A9C]">0</strong> baris
+          </div>
         </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-sm">
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <input id="pdrbFileInput" type="file" accept=".xlsx,.xls,.csv" class="block w-full text-xs text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-100 file:text-[#005A9C] hover:file:bg-sky-200 border border-slate-300 rounded-xl p-1.5 bg-slate-50" />
+          <button id="uploadPdrbBtn" type="button" class="px-5 py-3 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shrink-0 shadow">
+            Upload & Update PDRB Triwulanan
+          </button>
+        </div>
+
+        <div id="pdrbUploadStatus" class="hidden text-xs p-3 rounded-xl font-semibold"></div>
+      </div>
+
+      <!-- 4. Daftar Data Indikator -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-slate-200">
+          <h2 class="font-bold text-base sm:text-lg text-slate-900">4. Daftar Data & Grafik Tersimpan</h2>
+        </div>
+        <div class="table-scroll-wrapper">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[780px]">
             <thead id="adminTableHead" class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-600"></thead>
             <tbody id="adminTableBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- 4. Editor Grafik Donat Struktur Ekonomi PDRB -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+      <!-- 5. Editor Grafik Donat Struktur Ekonomi PDRB -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <h2 class="font-bold text-lg text-slate-900">4. Update Grafik Donat: Struktur Ekonomi (PDRB ADHB)</h2>
+            <h2 class="font-bold text-base sm:text-lg text-slate-900">5. Update Grafik Struktur PDRB</h2>
             <p class="text-xs text-slate-500">Kelola komposisi persentase lapangan usaha.</p>
           </div>
           <button type="button" id="addSectorBtn" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">+ Tambah Sektor</button>
         </div>
 
         <form id="sectorsForm" class="space-y-3">
-          <div id="sectorsList" class="space-y-2.5"></div>
-          <div class="pt-3 flex justify-end">
-            <button type="submit" class="px-5 py-2.5 rounded-xl btn-bps-blue text-xs font-bold shadow">Simpan Grafik Struktur PDRB</button>
+          <div id="sectorsList" class="space-y-3"></div>
+          <div class="pt-3">
+            <button type="submit" class="w-full sm:w-auto sm:float-right px-5 py-2.5 rounded-xl btn-bps-blue text-xs font-bold shadow">Simpan Grafik Struktur PDRB</button>
           </div>
         </form>
       </div>
@@ -198,9 +217,6 @@
   </div>
 
   <script>
-    // =========================================================================
-    // KAMUS INDIKATOR STRATEGIS BPS (KATEGORI -> INDIKATOR -> SATUAN & WARNA)
-    // =========================================================================
     const INDICATOR_CATALOG = {
       'Kependudukan': [
         { nama: 'Jumlah Penduduk', satuan: 'Jiwa', color: '#002B49', chart_type: 'bar', goodDirection: 'up' },
@@ -262,9 +278,114 @@
       if (authToken) showAdminPanel();
     });
 
-    // =========================================================================
-    // LOGIKA DROPDOWN KATEGORI -> NAMA INDIKATOR -> SATUAN & DELTA OTOMATIS
-    // =========================================================================
+    function parseIndonesianNumber(raw) {
+      if (raw === null || raw === undefined || raw === '') return null;
+      if (typeof raw === 'number') return raw;
+      let str = String(raw).trim();
+      if (str === '-' || str === '') return null;
+      if (str.includes(',') && str.includes('.')) {
+        str = str.replace(/\./g, '').replace(',', '.');
+      } else if (str.includes(',')) {
+        str = str.replace(',', '.');
+      }
+      const num = parseFloat(str);
+      return isNaN(num) ? null : num;
+    }
+
+    function extractPdrbFromSheetRows(rows) {
+      const records = [];
+      const blocks = [
+        { pendekatan: 'Lapangan Usaha', colData: 0, colTahun: 1, colPeriode: 2, colNilai: 3 },
+        { pendekatan: 'Pengeluaran', colData: 5, colTahun: 6, colPeriode: 7, colNilai: 8 }
+      ];
+
+      blocks.forEach(b => {
+        let lastJenis = '';
+        let lastTahun = '';
+
+        for (let r = 0; r < rows.length; r++) {
+          const row = rows[r] || [];
+          const cellData = String(row[b.colData] || '').trim();
+          const cellTahun = String(row[b.colTahun] || '').trim();
+          const cellPeriode = String(row[b.colPeriode] || '').trim();
+          const cellNilai = row[b.colNilai];
+
+          if (cellData.toUpperCase().includes('ADHB') || cellData.toUpperCase().includes('BERLAKU')) {
+            lastJenis = 'ADHB';
+          } else if (cellData.toUpperCase().includes('ADHK') || cellData.toUpperCase().includes('KONSTAN')) {
+            lastJenis = 'ADHK';
+          }
+
+          if (/^20\d{2}$/.test(cellTahun)) {
+            lastTahun = cellTahun;
+          }
+
+          const isValidPeriode = /^(Triwulan|Jumlah)/i.test(cellPeriode);
+          const parsedVal = parseIndonesianNumber(cellNilai);
+
+          if (lastJenis && lastTahun && isValidPeriode && parsedVal !== null) {
+            records.push({
+              pendekatan: b.pendekatan,
+              jenis: lastJenis,
+              tahun: lastTahun,
+              periode: cellPeriode,
+              nilai: parsedVal
+            });
+          }
+        }
+      });
+
+      return records;
+    }
+
+    document.getElementById('uploadPdrbBtn').addEventListener('click', async () => {
+      const fileInput = document.getElementById('pdrbFileInput');
+      const statusEl = document.getElementById('pdrbUploadStatus');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('Silakan pilih file Excel (.xlsx/.xls) atau CSV PDRB Triwulanan terlebih dahulu!');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const workbook = XLSX.read(evt.target.result, { type: 'binary' });
+          const sheetName = workbook.SheetNames.find(n => n.toLowerCase().includes('triwulan')) || workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+          const extracted = extractPdrbFromSheetRows(rows);
+          if (extracted.length === 0) {
+            statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-red-100 text-red-700';
+            statusEl.textContent = 'Gagal membaca data PDRB Triwulanan. Pastikan struktur kolom sesuai dengan template Google Sheets (Data | Tahun | Periode | Nilai).';
+            statusEl.classList.remove('hidden');
+            return;
+          }
+
+          const res = await fetch('/api/pdrb-triwulanan', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            body: JSON.stringify({ pdrbTriwulanan: extracted })
+          });
+
+          if (res.ok) {
+            statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-green-100 text-green-800';
+            statusEl.textContent = `Berhasil mengimpor ${extracted.length} baris data PDRB Triwulanan ke Web Publik!`;
+            statusEl.classList.remove('hidden');
+            document.getElementById('pdrbTriwulanCount').textContent = extracted.length;
+            fileInput.value = '';
+          }
+        } catch (err) {
+          statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-red-100 text-red-700';
+          statusEl.textContent = 'Terjadi kesalahan saat memproses file: ' + err.message;
+          statusEl.classList.remove('hidden');
+        }
+      };
+      reader.readAsBinaryString(file);
+    });
+
     function initDropdownLogic() {
       const catSelect = document.getElementById('fKategoriSelect');
       const catCustom = document.getElementById('fKategoriCustom');
@@ -355,8 +476,6 @@
 
     function recalculateDelta() {
       if (!currentData || currentData.years.length < 2) return;
-
-      // Cari 2 indeks tahun terakhir yang memiliki angka valid (bukan kosong)
       const validPoints = [];
       for (let i = currentData.years.length - 1; i >= 0; i--) {
         const el = document.getElementById(`val_${i}`);
@@ -365,7 +484,6 @@
           if (validPoints.length === 2) break;
         }
       }
-
       if (validPoints.length < 2) return;
 
       const prevPoint = validPoints[0];
@@ -376,17 +494,9 @@
       const satuan = (document.getElementById('fSatuan').value || '').toLowerCase();
 
       let unitLabel = satuan.includes('persen') ? 'poin persen' : (satuan.includes('poin') ? 'poin' : satuan);
-      let statusText = '';
-
-      if (diff === 0) {
-        statusText = `Stabil dibanding ${prevPoint.year}`;
-      } else if (activeGoodDirection === 'down') {
-        statusText = diff < 0 ? `Menurun dibanding ${prevPoint.year}` : `Meningkat dibanding ${prevPoint.year}`;
-      } else if (activeGoodDirection === 'up') {
-        statusText = diff > 0 ? `Meningkat dibanding ${prevPoint.year}` : `Menurun dibanding ${prevPoint.year}`;
-      } else {
-        statusText = `dibanding ${prevPoint.year}`;
-      }
+      let statusText = diff === 0 ? `Stabil dibanding ${prevPoint.year}` :
+        (activeGoodDirection === 'down' ? (diff < 0 ? `Menurun dibanding ${prevPoint.year}` : `Meningkat dibanding ${prevPoint.year}`) :
+        (activeGoodDirection === 'up' ? (diff > 0 ? `Meningkat dibanding ${prevPoint.year}` : `Menurun dibanding ${prevPoint.year}`) : `dibanding ${prevPoint.year}`));
 
       document.getElementById('fDelta').value = `${sign}${absDiff} ${unitLabel} (${statusText})`.trim();
     }
@@ -401,9 +511,6 @@
       return sel === '__custom__' ? document.getElementById('fNamaCustom').value.trim() : sel;
     }
 
-    // =========================================================================
-    // AUTENTIKASI & CRUD API
-    // =========================================================================
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('username').value.trim();
@@ -428,7 +535,7 @@
           errEl.classList.remove('hidden');
         }
       } catch (err) {
-        errEl.textContent = 'Server belum aktif! Jalankan "node server.js" di terminal dan buka http://localhost:3000/admin.html';
+        errEl.textContent = 'Gagal terhubung ke server.';
         errEl.classList.remove('hidden');
       }
     });
@@ -448,8 +555,10 @@
       const res = await fetch('/api/dashboard');
       currentData = await res.json();
 
+      document.getElementById('pdrbTriwulanCount').textContent = (currentData.pdrbTriwulanan || []).length;
+
       document.getElementById('yearInputs').innerHTML = currentData.years.map((y, idx) => `
-        <input type="text" data-year-idx="${idx}" value="${y}" required class="w-20 px-3 py-2 rounded-xl border border-slate-300 text-sm text-center font-bold">
+        <input type="text" data-year-idx="${idx}" value="${y}" required class="w-full sm:w-20 px-3 py-2 rounded-xl border border-slate-300 text-sm text-center font-bold">
       `).join('');
 
       document.getElementById('valueInputsGrid').innerHTML = currentData.years.map((y, idx) => `
@@ -480,8 +589,8 @@
           </td>
           ${item.values.map(v => `<td class="py-3 px-3 text-right font-mono">${v === null || v === undefined ? '-' : v}</td>`).join('')}
           <td class="py-3 px-4 text-right space-x-2 whitespace-nowrap">
-            <button onclick="editItem('${item.id}')" class="px-2.5 py-1 rounded bg-sky-100 text-[#005A9C] text-xs font-bold hover:bg-sky-200">Edit</button>
-            <button onclick="deleteItem('${item.id}')" class="px-2.5 py-1 rounded bg-red-100 text-red-600 text-xs font-bold hover:bg-red-200">Hapus</button>
+            <button onclick="editItem('${item.id}')" class="px-2.5 py-1.5 rounded bg-sky-100 text-[#005A9C] text-xs font-bold hover:bg-sky-200">Edit</button>
+            <button onclick="deleteItem('${item.id}')" class="px-2.5 py-1.5 rounded bg-red-100 text-red-600 text-xs font-bold hover:bg-red-200">Hapus</button>
           </td>
         </tr>
       `).join('');
@@ -599,7 +708,7 @@
       if (!item) return;
 
       document.getElementById('editId').value = item.id;
-      document.getElementById('formTitle').textContent = `Edit Data & Grafik: ${item.nama}`;
+      document.getElementById('formTitle').textContent = `Edit: ${item.nama}`;
       document.getElementById('cancelEditBtn').classList.remove('hidden');
 
       const catSelect = document.getElementById('fKategoriSelect');
@@ -645,7 +754,7 @@
     function resetForm() {
       document.getElementById('indicatorForm').reset();
       document.getElementById('editId').value = '';
-      document.getElementById('formTitle').textContent = '2. Input / Edit Data & Pengaturan Grafik';
+      document.getElementById('formTitle').textContent = '2. Input / Edit Data & Grafik';
       document.getElementById('cancelEditBtn').classList.add('hidden');
       document.getElementById('fKategoriCustom').classList.add('hidden');
       document.getElementById('fNamaCustom').classList.add('hidden');
@@ -657,23 +766,23 @@
 
     function renderSectorInputs(sectors) {
       document.getElementById('sectorsList').innerHTML = sectors.map((s) => `
-        <div class="sector-row grid grid-cols-12 gap-2 items-center">
-          <input type="text" placeholder="Nama Lapangan Usaha" value="${s.label}" class="sec-label col-span-7 px-3 py-2 rounded-xl border border-slate-300 text-sm">
-          <input type="number" step="any" placeholder="%" value="${s.value}" class="sec-val col-span-3 px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono">
-          <input type="color" value="${s.color}" class="sec-color col-span-1 w-full h-9 p-1 rounded-lg border border-slate-300">
-          <button type="button" onclick="this.parentElement.remove()" class="col-span-1 text-red-500 font-bold text-xs hover:underline">Hapus</button>
+        <div class="sector-row grid grid-cols-12 gap-2 items-center bg-slate-50 sm:bg-transparent p-2 sm:p-0 rounded-xl">
+          <input type="text" placeholder="Nama Lapangan Usaha" value="${s.label}" class="sec-label col-span-12 sm:col-span-7 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm">
+          <input type="number" step="any" placeholder="%" value="${s.value}" class="sec-val col-span-6 sm:col-span-3 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-mono">
+          <input type="color" value="${s.color}" class="sec-color col-span-3 sm:col-span-1 w-full h-10 p-1 rounded-lg border border-slate-300 bg-white">
+          <button type="button" onclick="this.parentElement.remove()" class="col-span-3 sm:col-span-1 text-red-500 font-bold text-xs text-center hover:underline">Hapus</button>
         </div>
       `).join('');
     }
 
     document.getElementById('addSectorBtn').addEventListener('click', () => {
       const div = document.createElement('div');
-      div.className = 'sector-row grid grid-cols-12 gap-2 items-center';
+      div.className = 'sector-row grid grid-cols-12 gap-2 items-center bg-slate-50 sm:bg-transparent p-2 sm:p-0 rounded-xl';
       div.innerHTML = `
-        <input type="text" placeholder="Nama Lapangan Usaha Baru" class="sec-label col-span-7 px-3 py-2 rounded-xl border border-slate-300 text-sm">
-        <input type="number" step="any" placeholder="0.00" value="0" class="sec-val col-span-3 px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono">
-        <input type="color" value="#0093DD" class="sec-color col-span-1 w-full h-9 p-1 rounded-lg border border-slate-300">
-        <button type="button" onclick="this.parentElement.remove()" class="col-span-1 text-red-500 font-bold text-xs hover:underline">Hapus</button>
+        <input type="text" placeholder="Nama Lapangan Usaha Baru" class="sec-label col-span-12 sm:col-span-7 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm">
+        <input type="number" step="any" placeholder="0.00" value="0" class="sec-val col-span-6 sm:col-span-3 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-mono">
+        <input type="color" value="#0093DD" class="sec-color col-span-3 sm:col-span-1 w-full h-10 p-1 rounded-lg border border-slate-300 bg-white">
+        <button type="button" onclick="this.parentElement.remove()" class="col-span-3 sm:col-span-1 text-red-500 font-bold text-xs text-center hover:underline">Hapus</button>
       `;
       document.getElementById('sectorsList').appendChild(div);
     });

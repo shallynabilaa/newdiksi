@@ -1,37 +1,49 @@
-/* Gradient Utama Hero Section (Fallback aman jika Tailwind CDN lambat) */
+/* Warna & Pola Latar Utama Khas BPS (Biru Dongker #002B49 -> #005A9C) */
 .hero-bg {
-  background-color: #002B49;
-  background-image: linear-gradient(135deg, #002B49 0%, #003E6B 50%, #005A9C 100%);
+  background: linear-gradient(135deg, #002B49 0%, #004377 55%, #005A9C 100%);
 }
 
 .hero-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.bg-bps-gradient {
-  background: linear-gradient(135deg, #002B49, #005A9C, #0093DD);
-}
-
+/* Tombol Aksi Utama BPS */
 .btn-bps-orange {
   background-color: #F58220;
   color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
+
 .btn-bps-orange:hover {
   background-color: #e06d0b;
+  transform: translateY(-1px);
 }
 
 .btn-bps-blue {
   background-color: #005A9C;
   color: #ffffff;
-}
-.btn-bps-blue:hover {
-  background-color: #002B49;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
-.kpi-card {
-  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+.btn-bps-blue:hover {
+  background-color: #00467a;
+  transform: translateY(-1px);
 }
+
+/* Efek Hover Kartu KPI */
+.kpi-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
 .kpi-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -8px rgba(0, 43, 73, 0.14);
+}
+
+/* Pembungkus Scroll Horizontal Tabel agar Responsif di HP */
+.table-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }

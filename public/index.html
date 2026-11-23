@@ -1,259 +1,420 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DIKSI 1501 | Dashboard Indikator Data Strategis Kabupaten Kerinci</title>
-  <meta name="description" content="Dashboard indikator strategis BPS Kabupaten Kerinci: kependudukan, ketenagakerjaan, kemiskinan, IPM, dan PDRB 2018-2026 dalam grafik dan tabel yang selalu diperbarui." />
-  <meta name="theme-color" content="#002B49" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="id_ID" />
-  <meta property="og:site_name" content="DIKSI 1501 - BPS Kabupaten Kerinci" />
-  <meta property="og:title" content="DIKSI 1501 | Dashboard Indikator Data Strategis Kabupaten Kerinci" />
-  <meta property="og:description" content="Pantau indikator strategis Kabupaten Kerinci: penduduk, tenaga kerja, kemiskinan, IPM, dan PDRB dalam satu dashboard." />
-  <meta name="twitter:card" content="summary" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23002B49'/%3E%3Crect x='6' y='17' width='4' height='9' rx='1' fill='%230093DD'/%3E%3Crect x='14' y='11' width='4' height='15' rx='1' fill='%2368B92E'/%3E%3Crect x='22' y='6' width='4' height='20' rx='1' fill='%23F58220'/%3E%3C/svg%3E" />
-
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Terapkan tema sebelum render pertama agar tidak berkedip
-    (function () {
-      try {
-        var t = localStorage.getItem('diksi_theme');
-        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+          }
         }
-      } catch (e) {}
-    })();
+      }
+    };
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-  <script src="app.js" defer></script>
 </head>
-<body>
-  <a href="#main" class="skip-link">Lewati ke konten utama</a>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased">
 
   <!-- NAVBAR -->
-  <header class="site-header">
-    <div class="container header-row">
-      <a href="#home" class="brand" aria-label="DIKSI 1501 - ke beranda">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none">
-            <rect x="4" y="16" width="4" height="10" rx="1" fill="#0093DD"/>
-            <rect x="10" y="11" width="4" height="15" rx="1" fill="#68B92E"/>
-            <rect x="16" y="7" width="4" height="19" rx="1" fill="#F58220"/>
-            <path d="M18 26L24 14L30 26H18Z" fill="#fff"/>
-          </svg>
-        </span>
-        <span>
-          <span class="brand-name">DIKSI <em>1501</em></span>
-          <span class="brand-sub">Data Indikator Strategis Kabupaten Kerinci</span>
-        </span>
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+      <a href="#" class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl hero-bg text-white flex items-center justify-center font-display font-extrabold text-xs sm:text-sm shrink-0 shadow">
+          1501
+        </div>
+        <div class="truncate">
+          <div class="font-display font-extrabold text-sm sm:text-lg leading-tight text-slate-900 dark:text-white truncate">
+            DIKSI <span class="text-[#005A9C] dark:text-sky-400">1501</span>
+          </div>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 truncate">BPS Kabupaten Kerinci</p>
+        </div>
       </a>
 
-      <nav class="nav" aria-label="Navigasi utama">
-        <a href="#home">Beranda</a>
-        <a href="#indikator">Indikator Makro</a>
-        <a href="#visualisasi">Visualisasi</a>
-        <a href="#tabel-data">Tabel Data</a>
-        <a href="#layanan">Layanan &amp; PPID</a>
+      <!-- Menu Navigasi Desktop -->
+      <nav class="hidden md:flex items-center gap-5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+        <button type="button" onclick="switchMainTab('strategis', 'ringkasan')" class="hover:text-[#005A9C] dark:hover:text-sky-400">Indikator Strategis</button>
+        <button type="button" onclick="switchMainTab('pdrbTriwulan', 'konten-utama')" class="text-[#68B92E] font-bold hover:underline">PDRB Triwulanan</button>
+        <button type="button" onclick="switchMainTab('inflasi', 'konten-utama')" class="text-[#F58220] font-bold hover:underline">Data Inflasi</button>
+        <a href="#layanan" class="hover:text-[#005A9C] dark:hover:text-sky-400">Layanan BPS</a>
       </nav>
 
-      <div class="header-actions">
-        <button id="themeToggle" type="button" class="btn btn-ghost btn-icon theme-toggle" aria-label="Beralih ke mode gelap" title="Ubah tema">
-          <i data-lucide="moon" class="icon icon-moon"></i>
-          <i data-lucide="sun" class="icon icon-sun"></i>
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <button id="themeToggle" aria-label="Ganti Tema" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
         </button>
-        <a href="admin.html" class="btn btn-ghost" aria-label="Masuk Admin">
-          <i data-lucide="lock" class="icon-sm icon"></i><span class="hide-mobile">Admin</span>
+        <a href="admin.html" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold whitespace-nowrap">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-[#005A9C] dark:text-sky-400"></i>
+          <span>Admin</span>
         </a>
-        <a href="https://ppid.bps.go.id/?mfd=1501" target="_blank" rel="noopener noreferrer" class="btn btn-primary only-wide">
-          PPID 1501 <i data-lucide="external-link" class="icon icon-sm"></i>
-        </a>
-        <button id="menuBtn" type="button" class="btn btn-ghost btn-icon menu-btn" aria-label="Buka menu" aria-expanded="false" aria-controls="mobileNav">
-          <i data-lucide="menu" class="icon"></i>
-        </button>
       </div>
     </div>
-    <div id="mobileNav" class="mobile-nav" hidden>
-      <nav class="container" aria-label="Navigasi seluler">
-        <a href="#home">Beranda</a>
-        <a href="#indikator">Indikator Makro</a>
-        <a href="#visualisasi">Visualisasi</a>
-        <a href="#tabel-data">Tabel Data</a>
-        <a href="#layanan">Layanan &amp; PPID</a>
-        <a href="https://ppid.bps.go.id/?mfd=1501" target="_blank" rel="noopener noreferrer">PPID 1501 (tautan luar)</a>
-      </nav>
-    </div>
+
+    <!-- Navigasi Cepat Khusus Layar HP -->
+    <nav class="flex md:hidden items-center justify-around border-t border-slate-100 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-900/90 px-2 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+      <button type="button" onclick="switchMainTab('strategis', 'ringkasan')" class="py-1 px-2 rounded hover:text-[#005A9C]">Strategis</button>
+      <button type="button" onclick="switchMainTab('pdrbTriwulan', 'konten-utama')" class="py-1 px-2 rounded text-[#68B92E] font-bold">PDRB Triwulan</button>
+      <button type="button" onclick="switchMainTab('inflasi', 'konten-utama')" class="py-1 px-2 rounded text-[#F58220] font-bold">Inflasi</button>
+      <a href="#layanan" class="py-1 px-2 rounded hover:text-[#005A9C]">Layanan</a>
+    </nav>
   </header>
 
-  <div id="apiBanner" class="banner" role="status" hidden>
-    <span id="apiBannerText"></span>
-    <button type="button" id="retryBtn">Coba lagi</button>
-  </div>
-
-  <main id="main">
-    <!-- HERO -->
-    <section id="home" class="hero" aria-labelledby="heroTitle">
-      <div class="container hero-inner">
-        <div>
-          <p class="pill">
-            <span class="dot" aria-hidden="true"></span>
-            <span>BPS Kabupaten Kerinci &bull; Pembaruan: <span id="lastUpdatedBadge">memuat…</span></span>
-          </p>
-          <h1 id="heroTitle">Dashboard Indikator Data Strategis (<span>DIKSI</span>) Kabupaten Kerinci</h1>
-          <p class="hero-lead">
-            Data <strong>kependudukan, ketenagakerjaan, kemiskinan, IPM, PDRB, dan inflasi</strong> dalam satu tempat, untuk mendukung keputusan yang berbasis data.
-          </p>
-          <div class="hero-cta">
-            <a href="#visualisasi" class="btn btn-accent"><i data-lucide="chart-column" class="icon"></i>Eksplorasi Visualisasi</a>
-            <a href="#tabel-data" class="btn btn-light"><i data-lucide="table-2" class="icon"></i>Lihat Tabel Data</a>
-          </div>
+  <!-- HERO SECTION -->
+  <section class="hero-bg relative overflow-hidden text-white">
+    <div class="hero-pattern absolute inset-0 opacity-40 pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 lg:py-16 grid lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+      <div class="lg:col-span-7 space-y-4">
+        <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[11px] sm:text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-[#68B92E]"></span>
+          <span>Data Resmi Terintegrasi • Update: <strong id="lastUpdatedBadge">-</strong></span>
         </div>
 
-        <div class="hero-card" aria-labelledby="heroCardTitle">
-          <div class="hero-card-head">
-            <div>
-              <p class="eyebrow">Sekilas makro Kerinci</p>
-              <h2 id="heroCardTitle">Sorotan Statistik Terkini</h2>
+        <h1 class="font-display font-extrabold text-2xl sm:text-4xl lg:text-5xl leading-tight">
+          Dashboard Indikator Data Strategis <span class="text-sky-300">Kabupaten Kerinci</span>
+        </h1>
+
+        <p class="text-xs sm:text-base text-slate-200 max-w-2xl leading-relaxed">
+          Portal diseminasi statistik makro BPS Kabupaten Kerinci (Kode Wilayah 1501) meliputi Indikator Tahunan, PDRB Triwulanan (Lapangan Usaha & Pengeluaran), serta Perkembangan Inflasi Bulanan.
+        </p>
+
+        <div class="flex flex-wrap gap-2.5 pt-1">
+          <button type="button" onclick="switchMainTab('strategis', 'visualisasi')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-bps-orange font-bold text-xs sm:text-sm shadow-lg">
+            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+            <span>Indikator Strategis</span>
+          </button>
+          <button type="button" onclick="switchMainTab('pdrbTriwulan', 'konten-utama')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 font-semibold text-xs sm:text-sm">
+            <i data-lucide="pie-chart" class="w-4 h-4 text-green-300"></i>
+            <span>PDRB Triwulanan</span>
+          </button>
+          <button type="button" onclick="switchMainTab('inflasi', 'konten-utama')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 font-semibold text-xs sm:text-sm">
+            <i data-lucide="trending-up" class="w-4 h-4 text-amber-300"></i>
+            <span>Data Inflasi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Highlight Indikator Makro -->
+      <div class="lg:col-span-5">
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 sm:p-5 shadow-xl">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-sky-200 mb-3">Sorotan Indikator Makro Terkini</p>
+          <div id="heroHighlights" class="grid grid-cols-2 gap-2.5 sm:gap-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main id="konten-utama" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8 sm:space-y-12">
+
+    <!-- PEMILIH 3 TAB UTAMA -->
+    <div class="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+      <button id="tabBtnStrategis" type="button" onclick="switchMainTab('strategis')" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all bg-[#005A9C] text-white shadow">
+        <i data-lucide="layers" class="w-4 h-4"></i>
+        <span>Indikator Strategis (Tahunan)</span>
+      </button>
+      <button id="tabBtnPdrbTriwulan" type="button" onclick="switchMainTab('pdrbTriwulan')" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <i data-lucide="pie-chart" class="w-4 h-4 text-[#68B92E]"></i>
+        <span>PDRB Triwulanan (LU & Pengeluaran)</span>
+      </button>
+      <button id="tabBtnInflasi" type="button" onclick="switchMainTab('inflasi')" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <i data-lucide="trending-up" class="w-4 h-4 text-[#F58220]"></i>
+        <span>Data Inflasi Bulanan (2024–2026)</span>
+      </button>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 1: INDIKATOR DATA STRATEGIS (TAHUNAN)                               -->
+    <!-- ======================================================================= -->
+    <div id="tabPanelStrategis" class="space-y-10 sm:space-y-14">
+      <section id="ringkasan" class="space-y-4 sm:space-y-6">
+        <div>
+          <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#005A9C] dark:text-sky-400">Ringkasan Makro</span>
+          <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white mt-0.5">Indikator Strategis Utama</h2>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Ketuk salah satu kartu indikator untuk melihat grafik perkembangannya.</p>
+        </div>
+        <div id="kpiGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5"></div>
+      </section>
+
+      <section id="visualisasi" class="grid lg:grid-cols-12 gap-5 sm:gap-6">
+        <div class="lg:col-span-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-sm flex flex-col justify-between">
+          <div class="space-y-3 sm:space-y-0 sm:flex sm:items-start sm:justify-between gap-3 mb-4">
+            <div class="min-w-0">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#005A9C] dark:text-sky-400">Analisis Seri Waktu</span>
+              <h3 id="chartTitle" class="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white mt-0.5 break-words">-</h3>
+              <p id="chartSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">-</p>
             </div>
-            <span class="live-tag">Live API</span>
-          </div>
-          <div id="heroHighlights" class="stat-grid" aria-live="polite">
-            <div class="stat"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line lg"></div><div class="skeleton sk-line sm"></div></div>
-            <div class="stat"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line lg"></div><div class="skeleton sk-line sm"></div></div>
-            <div class="stat"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line lg"></div><div class="skeleton sk-line sm"></div></div>
-            <div class="stat"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line lg"></div><div class="skeleton sk-line sm"></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- KPI -->
-    <section id="indikator" class="container kpi-wrap" aria-label="Indikator makro utama">
-      <div id="kpiGrid" class="kpi-grid" aria-live="polite">
-        <div class="kpi"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line lg"></div><div class="skeleton" style="height:36px"></div></div>
-        <div class="kpi"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line lg"></div><div class="skeleton" style="height:36px"></div></div>
-        <div class="kpi"><div class="skeleton sk-line sm"></div><div class="skeleton sk-line"></div><div class="skeleton sk-line lg"></div><div class="skeleton" style="height:36px"></div></div>
-      </div>
-    </section>
-
-    <!-- VISUALISASI -->
-    <section id="visualisasi" class="container section" aria-labelledby="visTitle">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Analitik &amp; tren</p>
-          <h2 id="visTitle">Visualisasi Indikator Strategis</h2>
-          <p class="section-sub">Pilih kategori dan indikator untuk melihat tren 2018&ndash;2026. Klik kartu atau baris tabel untuk membuka grafiknya.</p>
-        </div>
-        <div class="toolbar">
-          <label class="sr-only" for="chartIndicatorSelect">Pilih indikator</label>
-          <select id="chartIndicatorSelect" class="select" style="max-width:360px"></select>
-          <div class="segmented" role="group" aria-label="Jenis grafik">
-            <button id="btnLineChart" type="button" aria-pressed="true">Garis</button>
-            <button id="btnBarChart" type="button" aria-pressed="false">Batang</button>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
+              <select id="chartIndicatorSelect" class="w-full sm:w-64 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#005A9C]"></select>
+              <div class="inline-flex rounded-xl border border-slate-200 dark:border-slate-700 p-1 bg-slate-100 dark:bg-slate-800 self-start">
+                <button id="btnLineChart" type="button" class="px-3 py-1.5 rounded-lg text-xs font-bold">Garis</button>
+                <button id="btnBarChart" type="button" class="px-3 py-1.5 rounded-lg text-xs font-bold">Batang</button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div id="categoryChips" class="chips" role="group" aria-label="Filter kategori grafik"></div>
+          <div class="relative h-60 sm:h-72 w-full">
+            <canvas id="mainTrendChart"></canvas>
+          </div>
 
-      <div class="chart-grid">
-        <div class="card card-pad">
-          <h3 id="chartTitle">Memuat grafik…</h3>
-          <p id="chartSubtitle" class="card-sub">Kabupaten Kerinci</p>
-          <div class="chart-meta">
-            <div class="meta-box"><p class="meta-label">Nilai terbaru</p><p id="metaLatest" class="meta-value">-</p></div>
-            <div class="meta-box"><p class="meta-label">Tahun data</p><p id="metaYear" class="meta-value">-</p></div>
-            <div class="meta-box"><p class="meta-label">Perubahan</p><p id="metaDelta" class="meta-value">-</p></div>
-          </div>
-          <div id="mainChartBox" class="chart-box">
-            <canvas id="mainTrendChart" role="img" aria-label="Grafik tren indikator terpilih"></canvas>
-          </div>
-          <div class="note">
-            <h4>Catatan analisis</h4>
-            <p id="chartInsight"></p>
+          <div class="mt-4 p-3 sm:p-3.5 rounded-xl bg-sky-50/80 dark:bg-slate-800/80 border border-sky-100 dark:border-slate-700 flex items-start gap-2.5">
+            <i data-lucide="info" class="w-4 h-4 text-[#005A9C] dark:text-sky-400 shrink-0 mt-0.5"></i>
+            <p id="chartInsight" class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">-</p>
           </div>
         </div>
 
-        <div class="card card-pad" style="display:flex;flex-direction:column">
-          <h3>Struktur Ekonomi Kerinci</h3>
-          <p class="card-sub">Distribusi PDRB ADHB (%)</p>
-          <div id="sectorChartBox" class="chart-box sm">
-            <canvas id="sectorChart" role="img" aria-label="Grafik donat distribusi PDRB menurut lapangan usaha"></canvas>
-          </div>
-          <div id="sectorLegend" class="legend"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TABEL DATA -->
-    <section id="tabel-data" class="container section" aria-labelledby="tableTitle">
-      <div class="card" style="overflow:hidden">
-        <div class="table-head">
+        <div class="lg:col-span-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-sm flex flex-col justify-between">
           <div>
-            <p class="eyebrow">Dataset terstruktur</p>
-            <h2 id="tableTitle" style="font-size:clamp(20px,2.6vw,26px);font-weight:800;margin-top:4px">Tabel Data Indikator Strategis</h2>
-          </div>
-          <div class="table-tools">
-            <div class="search">
-              <i data-lucide="search" class="icon icon-sm"></i>
-              <label class="sr-only" for="tableSearch">Cari indikator</label>
-              <input id="tableSearch" type="search" class="field-input" placeholder="Cari indikator…" autocomplete="off" />
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#68B92E]">Distribusi Lapangan Usaha</span>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-0.5">Struktur Ekonomi (PDRB)</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Kontribusi sektor terhadap PDRB ADHB (%)</p>
+            <div class="relative h-48 sm:h-52 w-full">
+              <canvas id="sectorChart"></canvas>
             </div>
-            <label class="sr-only" for="tableCategoryFilter">Filter kategori tabel</label>
-            <select id="tableCategoryFilter" class="select" style="width:auto;max-width:100%">
-              <option value="all">Semua Kategori</option>
-            </select>
-            <button id="exportCsvBtn" type="button" class="btn btn-success"><i data-lucide="download" class="icon icon-sm"></i>Unduh CSV</button>
+          </div>
+          <div id="sectorLegend" class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs"></div>
+        </div>
+      </section>
+
+      <section id="tabel-data" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 space-y-3 lg:space-y-0 lg:flex lg:items-center lg:justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#005A9C] dark:text-sky-400">Dataset Terstruktur</span>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white mt-0.5">Tabel Data Indikator Strategis</h3>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <input id="tableSearch" type="text" placeholder="Cari indikator..." class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-[#005A9C]" />
+            <div class="flex gap-2">
+              <select id="tableCategoryFilter" class="flex-1 sm:flex-none px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold"></select>
+              <button id="exportCsvBtn" type="button" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shrink-0 shadow-sm">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span>Excel</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="table-wrap" tabindex="0" role="region" aria-label="Tabel data, geser untuk melihat semua tahun">
-          <table class="data">
+        <div class="table-scroll-wrapper">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[760px]">
             <thead id="dataTableHead"></thead>
-            <tbody id="dataTableBody">
-              <tr><td colspan="12"><div class="skeleton sk-line" style="margin:8px 0"></div><div class="skeleton sk-line" style="margin:8px 0"></div><div class="skeleton sk-line" style="margin:8px 0"></div></td></tr>
-            </tbody>
+            <tbody id="dataTableBody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
           </table>
         </div>
-        <p id="tableCount" class="table-foot" aria-live="polite"></p>
-      </div>
-    </section>
 
-    <!-- LAYANAN -->
-    <section id="layanan" class="container section" aria-labelledby="svcTitle" style="padding-bottom:16px">
-      <h2 id="svcTitle" class="sr-only">Layanan dan kanal resmi</h2>
-      <div class="service-grid">
-        <a href="https://ppid.bps.go.id/?mfd=1501" target="_blank" rel="noopener noreferrer" class="service featured">
-          <h3>PPID BPS Kabupaten Kerinci</h3>
-          <p>Permohonan informasi publik dan data mikro resmi Satker 1501.</p>
-          <span class="more">Buka portal PPID <i data-lucide="arrow-up-right" class="icon icon-sm"></i></span>
-        </a>
-        <a href="https://kerincikab.bps.go.id" target="_blank" rel="noopener noreferrer" class="service">
-          <h3>Website Resmi BPS Kerinci</h3>
-          <p>Publikasi Daerah Dalam Angka, Berita Resmi Statistik, dan Tabel Dinamis.</p>
-          <span class="more">kerincikab.bps.go.id <i data-lucide="arrow-up-right" class="icon icon-sm"></i></span>
-        </a>
-        <div class="service">
-          <h3>Media Sosial Resmi</h3>
-          <p>Ikuti pembaruan infografis statistik Kabupaten Kerinci.</p>
-          <div class="links">
-            <a href="https://www.instagram.com/bpskabupatenkerinci/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://www.facebook.com/bpskerinci" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <div id="tablePagination" class="px-4 sm:px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"></div>
+      </section>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 2: PDRB TRIWULANAN (LAPANGAN USAHA & PENGELUARAN)                   -->
+    <!-- ======================================================================= -->
+    <div id="tabPanelPdrbTriwulan" class="hidden space-y-6 sm:space-y-8">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#68B92E]">Produk Domestik Regional Bruto (Miliar Rupiah)</span>
+            <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white mt-0.5">PDRB Triwulanan Kabupaten Kerinci</h2>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="pdrbPendekatanFilter" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="Lapangan Usaha">PDRB Lapangan Usaha</option>
+              <option value="Pengeluaran">PDRB Pengeluaran</option>
+            </select>
+            <select id="pdrbJenisFilter" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="ADHB">Atas Dasar Harga Berlaku (ADHB)</option>
+              <option value="ADHK">Atas Dasar Harga Konstan (ADHK)</option>
+            </select>
+            <select id="pdrbTahunFilter" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="all">Semua Tahun</option>
+            </select>
           </div>
         </div>
+
+        <div class="relative h-64 sm:h-72 w-full pt-2">
+          <canvas id="pdrbTriwulanChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 id="pdrbTableTitle" class="font-display font-bold text-lg text-slate-900 dark:text-white">Rincian Nilai PDRB Triwulanan (Miliar Rupiah)</h3>
+            <p class="text-xs text-slate-500">Data dapat diperbarui sewaktu-waktu melalui fitur Upload Excel/CSV di Panel Admin.</p>
+          </div>
+          <button id="exportPdrbTriwulanExcelBtn" type="button" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shadow-sm self-start sm:self-auto">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Excel PDRB Triwulan</span>
+          </button>
+        </div>
+
+        <div class="table-scroll-wrapper">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[540px]">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-xs font-bold uppercase text-slate-600 dark:text-slate-300">
+                <th class="py-3.5 px-4">Pendekatan</th>
+                <th class="py-3.5 px-4">Jenis Harga</th>
+                <th class="py-3.5 px-4">Tahun</th>
+                <th class="py-3.5 px-4">Periode</th>
+                <th class="py-3.5 px-4 text-right">Nilai (Miliar Rp)</th>
+              </tr>
+            </thead>
+            <tbody id="pdrbTriwulanTableBody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+
+        <div id="pdrbTriwulanPagination" class="px-4 sm:px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 3: DATA INFLASI BULANAN (YoY, MtM, YtD) 2024–2026                   -->
+    <!-- ======================================================================= -->
+    <div id="tabPanelInflasi" class="hidden space-y-6 sm:space-y-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-slate-500">Inflasi Tahunan (YoY)</span>
+            <span id="infBadgeYoY" class="text-xs font-semibold px-2 py-0.5 rounded bg-sky-100 text-[#005A9C]">Oktober 2026</span>
+          </div>
+          <p id="infLatestYoY" class="font-display font-extrabold text-3xl text-[#005A9C] dark:text-sky-400 mt-2">3,73%</p>
+          <p class="text-xs text-slate-500 mt-1">Year-on-Year (dibanding bulan yang sama tahun sebelumnya)</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-slate-500">Inflasi Bulanan (MtM)</span>
+            <span id="infBadgeMtM" class="text-xs font-semibold px-2 py-0.5 rounded bg-orange-100 text-[#F58220]">Oktober 2026</span>
+          </div>
+          <p id="infLatestMtM" class="font-display font-extrabold text-3xl text-[#F58220] mt-2">0,47%</p>
+          <p class="text-xs text-slate-500 mt-1">Month-to-Month (dibanding bulan sebelumnya)</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-slate-500">Inflasi Tahun Kalender (YtD)</span>
+            <span id="infBadgeYtD" class="text-xs font-semibold px-2 py-0.5 rounded bg-green-100 text-[#68B92E]">Oktober 2026</span>
+          </div>
+          <p id="infLatestYtD" class="font-display font-extrabold text-3xl text-[#68B92E] mt-2">4,00%</p>
+          <p class="text-xs text-slate-500 mt-1">Year-to-Date (kumulatif sejak Desember tahun sebelumnya)</p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#F58220]">Visualisasi Seri Bulanan</span>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white mt-0.5">Grafik Perkembangan Inflasi (YoY, MtM, YtD)</h3>
+          </div>
+          <select id="inflationYearFilterChart" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+            <option value="all">Semua Tahun (2024–2026)</option>
+            <option value="2026" selected>Tahun 2026</option>
+            <option value="2025">Tahun 2025</option>
+            <option value="2024">Tahun 2024</option>
+          </select>
+        </div>
+
+        <div class="relative h-64 sm:h-80 w-full">
+          <canvas id="inflationTrendChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#005A9C] dark:text-sky-400">Rincian Bulanan</span>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white mt-0.5">Tabel Perkembangan Inflasi (Persen)</h3>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select id="inflationYearFilterTable" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="all">Semua Tahun (2024–2026)</option>
+              <option value="2026">Tahun 2026</option>
+              <option value="2025">Tahun 2025</option>
+              <option value="2024">Tahun 2024</option>
+            </select>
+            <button id="exportInflationExcelBtn" type="button" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shadow-sm">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Excel Inflasi</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-scroll-wrapper">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[520px]">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-xs font-bold uppercase text-slate-600 dark:text-slate-300">
+                <th class="py-3.5 px-4">Tahun</th>
+                <th class="py-3.5 px-4">Bulan</th>
+                <th class="py-3.5 px-4 text-right">YoY (%)</th>
+                <th class="py-3.5 px-4 text-right">MtM (%)</th>
+                <th class="py-3.5 px-4 text-right">YtD (%)</th>
+              </tr>
+            </thead>
+            <tbody id="inflationTableBody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+
+        <div id="inflationPagination" class="px-4 sm:px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"></div>
+      </div>
+    </div>
+
+    <!-- 4. LAYANAN BPS KERINCI -->
+    <section id="layanan" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+      <div class="hero-bg text-white rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-sky-300">Pelayanan Statistik Terpadu</span>
+          <h4 class="font-display font-bold text-lg mt-1">PPID BPS Kabupaten Kerinci</h4>
+          <p class="text-xs text-slate-200 mt-2 leading-relaxed">Permohonan informasi publik, konsultasi statistik, dan data mikro resmi Satker 1501.</p>
+        </div>
+        <a href="https://ppid.bps.go.id/?mfd=1501" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-300 hover:underline">
+          <span>Kunjungi Portal PPID 1501</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-[#005A9C] dark:text-sky-400">Publikasi & BRS</span>
+          <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">Website Resmi BPS Kerinci</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">Unduh publikasi Kabupaten Kerinci Dalam Angka, Berita Resmi Statistik, dan Tabel Dinamis.</p>
+        </div>
+        <a href="https://kerincikab.bps.go.id" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#005A9C] dark:text-sky-400 hover:underline">
+          <span>kerincikab.bps.go.id</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm flex flex-col justify-between space-y-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-[#68B92E]">Diseminasi Digital</span>
+          <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">Kantor BPS Kabupaten Kerinci</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">Jl. Lintas Sungai Penuh - Kayu Aro, Desa Tutung Bungkuk, Kec. Siulak, Kab. Kerinci, Jambi.</p>
+        </div>
+        <span class="text-[11px] font-semibold text-slate-400">Kode Satker: 1501</span>
       </div>
     </section>
+
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; 2026 Badan Pusat Statistik Kabupaten Kerinci (1501) &bull; BerAKHLAK, Bangga Melayani Bangsa</p>
-    </div>
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-center text-xs text-slate-500 dark:text-slate-400 px-4">
+    <p class="font-semibold text-slate-700 dark:text-slate-300">DIKSI 1501 — Dashboard Indikator Data Strategis Kabupaten Kerinci</p>
+    <p class="mt-1">© 2026 Badan Pusat Statistik Kabupaten Kerinci. Hak Cipta Dilindungi.</p>
   </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>

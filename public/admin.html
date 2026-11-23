@@ -3,265 +3,220 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin | DIKSI 1501 BPS Kabupaten Kerinci</title>
-  <meta name="description" content="Panel admin DIKSI 1501: kelola data indikator strategis dan grafik BPS Kabupaten Kerinci." />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="theme-color" content="#002B49" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23002B49'/%3E%3Crect x='6' y='17' width='4' height='9' rx='1' fill='%230093DD'/%3E%3Crect x='14' y='11' width='4' height='15' rx='1' fill='%2368B92E'/%3E%3Crect x='22' y='6' width='4' height='20' rx='1' fill='%23F58220'/%3E%3C/svg%3E" />
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('diksi_theme');
-        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
-        }
-      } catch (e) {}
-    })();
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <title>Admin Backend | DIKSI 1501 BPS Kabupaten Kerinci</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
 </head>
-<body>
-  <a href="#adminMain" class="skip-link">Lewati ke konten utama</a>
+<body class="bg-slate-100 text-slate-800 min-h-screen">
 
-  <!-- ===================== LOGIN ===================== -->
-  <div id="loginSection" class="login-page">
-    <main class="login-card">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none">
-          <rect x="4" y="16" width="4" height="10" rx="1" fill="#0093DD"/>
-          <rect x="10" y="11" width="4" height="15" rx="1" fill="#68B92E"/>
-          <rect x="16" y="7" width="4" height="19" rx="1" fill="#F58220"/>
-          <path d="M18 26L24 14L30 26H18Z" fill="#fff"/>
-        </svg>
-      </span>
-      <div style="text-align:center"><span class="badge">BPS Kabupaten Kerinci (1501)</span></div>
-      <h1 style="margin-top:12px">Panel Admin DIKSI</h1>
-      <p class="lead">Masuk untuk mengelola data dan grafik indikator strategis.</p>
+  <!-- LOGIN VIEW -->
+  <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 hero-bg">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 space-y-6">
+      <div class="text-center">
+        <span class="inline-block px-3 py-1 rounded-full bg-sky-100 text-[#005A9C] text-xs font-bold mb-2">BPS KABUPATEN KERINCI (1501)</span>
+        <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">Panel Admin DIKSI</h1>
+        <p class="text-xs text-slate-500 mt-1">Masuk untuk mengelola data & grafik indikator strategis</p>
+      </div>
 
-      <form id="loginForm" class="stack" style="margin-top:24px" novalidate>
-        <div class="field">
-          <label for="username">Nama pengguna</label>
-          <input id="username" name="username" type="text" class="field-input" placeholder="Masukkan nama pengguna" autocomplete="username" autocapitalize="none" spellcheck="false" required />
+      <form id="loginForm" class="space-y-4" autocomplete="off">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Username Admin</label>
+          <input id="username" type="text" placeholder="Masukkan username admin" autocomplete="off" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
         </div>
-        <div class="field">
-          <label for="password">Kata sandi</label>
-          <div class="pw-wrap">
-            <input id="password" name="password" type="password" class="field-input" placeholder="Masukkan kata sandi" autocomplete="current-password" required />
-            <button type="button" id="pwToggle" class="pw-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">
-              <i data-lucide="eye" class="icon"></i>
-            </button>
-          </div>
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Password</label>
+          <input id="password" type="password" placeholder="Masukkan password" autocomplete="new-password" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#005A9C]">
         </div>
-        <div id="loginError" class="form-error" role="alert" hidden></div>
-        <button id="loginBtn" type="submit" class="btn btn-primary btn-block" style="min-height:48px">Masuk ke Panel Admin</button>
+        <p id="loginError" class="text-xs text-red-600 font-semibold hidden"></p>
+        <button type="submit" class="w-full py-3 rounded-xl btn-bps-blue font-bold text-sm shadow-md">Masuk ke Dashboard Admin</button>
       </form>
 
-      <p style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-        <a href="index.html" style="font-size:14px;font-weight:600">&larr; Kembali ke halaman publik</a>
-      </p>
-    </main>
+      <div class="text-center pt-2 border-t border-slate-100">
+        <a href="index.html" class="text-xs font-semibold text-[#005A9C] hover:underline">← Kembali ke Halaman Publik DIKSI</a>
+      </div>
+    </div>
   </div>
 
-  <!-- ===================== ADMIN ===================== -->
-  <div id="adminDashboard" hidden>
-    <header class="admin-header">
-      <div class="container header-row">
-        <div class="brand">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" fill="none">
-              <rect x="4" y="16" width="4" height="10" rx="1" fill="#0093DD"/>
-              <rect x="10" y="11" width="4" height="15" rx="1" fill="#68B92E"/>
-              <rect x="16" y="7" width="4" height="19" rx="1" fill="#F58220"/>
-              <path d="M18 26L24 14L30 26H18Z" fill="#fff"/>
-            </svg>
-          </span>
-          <span>
-            <span class="brand-name">ADMIN DIKSI <em>1501</em></span>
-            <span class="brand-sub" style="color:#BFD2E2">Perbarui data dan grafik</span>
-          </span>
+  <!-- ADMIN DASHBOARD VIEW -->
+  <div id="adminDashboard" class="hidden">
+    <header class="hero-bg text-white shadow-md sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-extrabold text-base sm:text-lg truncate">ADMIN DIKSI <span class="text-sky-300">1501</span></span>
         </div>
-        <div class="header-actions">
-          <button id="themeToggle" type="button" class="btn btn-ghost btn-icon theme-toggle" aria-label="Beralih ke mode gelap" title="Ubah tema">
-            <i data-lucide="moon" class="icon icon-moon"></i>
-            <i data-lucide="sun" class="icon icon-sun"></i>
-          </button>
-          <a href="index.html" target="_blank" rel="noopener" class="btn btn-ghost" aria-label="Lihat web publik (tab baru)">
-            <i data-lucide="external-link" class="icon icon-sm"></i><span class="hide-mobile">Web publik</span>
-          </a>
-          <button id="logoutBtn" type="button" class="btn btn-ghost" aria-label="Keluar">
-            <i data-lucide="log-out" class="icon icon-sm"></i><span class="hide-mobile">Keluar</span>
-          </button>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="index.html" target="_blank" class="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shadow">Web Publik ↗</a>
+          <button id="logoutBtn" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-xs font-semibold">Keluar</button>
         </div>
       </div>
     </header>
 
-    <main id="adminMain" class="container admin-main">
-
-      <!-- 1. Tahun -->
-      <section class="card card-pad admin-section" aria-labelledby="h-years">
-        <h2 id="h-years"><span class="step">1</span>Seri tahun</h2>
-        <p class="card-sub" style="margin-bottom:16px">Label tahun ini tampil sebagai sumbu X grafik dan kolom tabel di web publik.</p>
-        <form id="yearsForm" class="row-between" style="align-items:flex-end">
-          <div id="yearInputs" class="year-inputs" role="group" aria-label="Label tahun"></div>
-          <button type="submit" class="btn btn-primary" id="yearsBtn">Simpan tahun</button>
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+      
+      <!-- 1. Pengaturan Tahun Kolom -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+        <h2 class="font-bold text-base sm:text-lg text-slate-900">1. Pengaturan Seri Tahun (Indikator Tahunan)</h2>
+        <p class="text-xs text-slate-500 mb-3">Ubah label tahun yang tampil di grafik tren dan tabel publik.</p>
+        <form id="yearsForm" class="space-y-3">
+          <div id="yearInputs" class="grid grid-cols-3 sm:flex sm:flex-wrap gap-2"></div>
+          <button type="submit" class="w-full sm:w-auto px-4 py-2.5 rounded-xl btn-bps-blue text-xs font-bold">Simpan Perubahan Tahun</button>
         </form>
-      </section>
+      </div>
 
-      <!-- 2. Form + preview -->
-      <div class="admin-grid">
-        <section class="card card-pad admin-section" aria-labelledby="formTitle">
-          <div class="row-between" style="margin-bottom:16px">
-            <h2 id="formTitle"><span class="step">2</span><span id="formTitleText">Tambah indikator baru</span></h2>
-            <button id="cancelEditBtn" type="button" class="btn btn-ghost btn-sm" hidden>Batal edit</button>
+      <!-- 2. Form Tambah / Edit Indikator & Live Preview Grafik -->
+      <div class="grid lg:grid-cols-12 gap-5 sm:gap-6">
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <h2 id="formTitle" class="font-bold text-base sm:text-lg text-slate-900">2. Input / Edit Data & Grafik</h2>
+            <button id="cancelEditBtn" type="button" class="hidden px-3 py-1 rounded-lg bg-slate-100 text-xs font-bold text-slate-600 hover:bg-slate-200 shrink-0">Batal Edit</button>
           </div>
 
-          <form id="indicatorForm" class="form-grid two">
+          <form id="indicatorForm" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <input type="hidden" id="editId" />
 
-            <div class="field">
-              <label for="fKategoriSelect">Kategori indikator</label>
-              <select id="fKategoriSelect" class="select" required>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Kategori Indikator</label>
+              <select id="fKategoriSelect" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
                 <option value="Kependudukan">Kependudukan</option>
                 <option value="Ketenagakerjaan">Ketenagakerjaan</option>
                 <option value="Kemiskinan">Kemiskinan</option>
                 <option value="IPM">IPM (Indeks Pembangunan Manusia)</option>
                 <option value="Pendidikan (APS)">Pendidikan (APS)</option>
-                <option value="PDRB">PDRB &amp; Pertumbuhan Ekonomi</option>
+                <option value="PDRB">PDRB & Pertumbuhan Ekonomi</option>
                 <option value="Inflasi">Inflasi / Indeks Harga</option>
-                <option value="__custom__">+ Kategori lain (ketik manual)</option>
+                <option value="__custom__">+ Kategori Lainnya (Ketik Manual)</option>
               </select>
-              <input id="fKategoriCustom" type="text" class="field-input" placeholder="Nama kategori baru" aria-label="Nama kategori baru" hidden />
+              <input id="fKategoriCustom" type="text" placeholder="Ketik nama kategori baru..." class="hidden mt-2 w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
             </div>
 
-            <div class="field">
-              <label for="fNamaSelect">Nama indikator</label>
-              <select id="fNamaSelect" class="select" required></select>
-              <input id="fNamaCustom" type="text" class="field-input" placeholder="Nama indikator baru" aria-label="Nama indikator baru" hidden />
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Nama Indikator</label>
+              <select id="fNamaSelect" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white"></select>
+              <input id="fNamaCustom" type="text" placeholder="Ketik nama indikator baru..." class="hidden mt-2 w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
             </div>
 
-            <div class="field">
-              <label for="fSatuan">Satuan <span class="hint">(terisi otomatis, bisa diubah)</span></label>
-              <input id="fSatuan" type="text" class="field-input" placeholder="Contoh: Persen, Poin, Jiwa" required />
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Satuan <span class="text-[10px] font-normal text-sky-600">(Otomatis)</span></label>
+              <input id="fSatuan" type="text" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
             </div>
 
-            <div class="field">
-              <label for="fDelta">Keterangan perubahan <span class="hint">(dihitung dari 2 tahun terakhir)</span></label>
-              <input id="fDelta" type="text" class="field-input" placeholder="Terhitung otomatis dari data tahunan" />
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Keterangan Perubahan <span class="text-[10px] font-normal text-sky-600">(Otomatis)</span></label>
+              <input id="fDelta" type="text" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium">
             </div>
 
-            <div class="field">
-              <label for="fChartType">Tipe grafik default</label>
-              <select id="fChartType" class="select">
-                <option value="line">Grafik garis</option>
-                <option value="bar">Grafik batang</option>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Tipe Grafik Default</label>
+              <select id="fChartType" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                <option value="line">Grafik Garis (Line Chart)</option>
+                <option value="bar">Grafik Batang (Bar Chart)</option>
               </select>
             </div>
-
-            <div class="field">
-              <label for="fColor">Warna grafik</label>
-              <div class="color-row">
-                <input id="fColor" type="color" value="#005A9C" />
-                <span id="colorHexLabel" class="num" style="font-size:13px;color:var(--muted)">#005A9C</span>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Warna Grafik</label>
+              <div class="flex items-center gap-2">
+                <input id="fColor" type="color" value="#005A9C" class="w-12 h-10 p-1 rounded-xl border border-slate-300 cursor-pointer">
+                <span id="colorHexLabel" class="text-xs font-mono text-slate-500">#005A9C</span>
               </div>
             </div>
 
-            <div class="field span-2">
-              <label for="fInsight">Catatan analisis singkat</label>
-              <textarea id="fInsight" rows="2" class="field-input" placeholder="Tulis ringkasan perkembangan indikator…"></textarea>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-600 mb-1">Catatan Analisis Singkat</label>
+              <textarea id="fInsight" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm"></textarea>
             </div>
 
-            <div class="field span-2">
-              <span class="label" id="valuesLabel">Nilai per tahun</span>
-              <span class="hint">Pakai titik (.) untuk desimal. Kosongkan jika data belum tersedia.</span>
-              <div id="valueInputsGrid" class="values-grid" role="group" aria-labelledby="valuesLabel"></div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-600 mb-2">Nilai Data Per Tahun</label>
+              <div id="valueInputsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
             </div>
 
-            <div class="span-2 form-actions">
-              <button id="saveBtn" type="submit" class="btn btn-accent" style="min-height:48px">Simpan &amp; tampilkan di web publik</button>
+            <div class="sm:col-span-2 pt-2">
+              <button type="submit" class="w-full sm:w-auto sm:float-right px-6 py-3 rounded-xl btn-bps-orange font-bold text-sm shadow">Simpan & Update ke Web Publik</button>
             </div>
           </form>
-        </section>
+        </div>
 
-        <aside class="card card-pad sticky-col" aria-labelledby="previewTitle">
-          <div class="row-between">
-            <span class="eyebrow">Pratinjau langsung</span>
-            <span class="badge">Live</span>
+        <!-- Live Preview Grafik -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#005A9C]">Pratinjau Grafik</span>
+              <span class="text-[11px] px-2 py-0.5 rounded bg-sky-50 text-[#005A9C] font-semibold">Live Preview</span>
+            </div>
+            <h3 id="previewTitle" class="font-bold text-base text-slate-900">Judul Indikator</h3>
+            <p id="previewSubtitle" class="text-xs text-slate-500 mb-4">Satuan: -</p>
+            <div class="relative h-56 sm:h-60 w-full">
+              <canvas id="adminPreviewChart"></canvas>
+            </div>
           </div>
-          <h3 id="previewTitle" style="margin-top:8px">Judul indikator</h3>
-          <p id="previewSubtitle" class="card-sub">Satuan: -</p>
-          <div id="previewBox" class="chart-box sm" style="height:260px">
-            <canvas id="adminPreviewChart" role="img" aria-label="Pratinjau grafik indikator"></canvas>
-          </div>
-          <p class="hint" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">Perubahan pada form langsung tampil di sini sebelum disimpan.</p>
-        </aside>
+          <p class="text-[11px] text-slate-400 mt-4 pt-3 border-t border-slate-100">
+            Perubahan indikator, satuan, angka tahunan, atau jenis grafik langsung tampil pada pratinjau ini.
+          </p>
+        </div>
       </div>
 
-      <!-- 3. Daftar -->
-      <section class="card admin-section" style="overflow:hidden" aria-labelledby="h-list">
-        <div class="table-head">
+      <!-- 3. UPLOAD FILE EXCEL / CSV PDRB TRIWULANAN -->
+      <div class="bg-white rounded-2xl border-2 border-dashed border-[#0093DD] p-4 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 id="h-list"><span class="step">3</span>Indikator tersimpan</h2>
-            <p id="listCount" class="card-sub" aria-live="polite"></p>
+            <span class="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-[#005A9C] text-[11px] font-bold mb-1">IMPORT OTOMATIS SPREADSHEET</span>
+            <h2 class="font-bold text-base sm:text-lg text-slate-900">3. Upload File PDRB Triwulanan (.xlsx / .xls / .csv)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Unggah langsung file Excel dari Google Sheets Anda (berisi tabel <strong>PDRB Triwulanan Lapangan Usaha</strong> & <strong>Pengeluaran</strong>, baik ADHB maupun ADHK). Sel yang ter-merge otomatis terbaca.
+            </p>
           </div>
-          <div class="search" style="max-width:320px">
-            <i data-lucide="search" class="icon icon-sm"></i>
-            <label class="sr-only" for="adminSearch">Cari indikator</label>
-            <input id="adminSearch" type="search" class="field-input" placeholder="Cari indikator…" autocomplete="off" />
+          <div class="text-xs bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 shrink-0">
+            Data tersimpan saat ini: <strong id="pdrbTriwulanCount" class="text-[#005A9C]">0</strong> baris
           </div>
         </div>
-        <div class="table-wrap" tabindex="0" role="region" aria-label="Daftar indikator, geser untuk melihat semua kolom">
-          <table class="data">
-            <thead id="adminTableHead"></thead>
-            <tbody id="adminTableBody">
-              <tr><td colspan="12"><div class="skeleton sk-line" style="margin:8px 0"></div><div class="skeleton sk-line" style="margin:8px 0"></div></td></tr>
-            </tbody>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <input id="pdrbFileInput" type="file" accept=".xlsx,.xls,.csv" class="block w-full text-xs text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-100 file:text-[#005A9C] hover:file:bg-sky-200 border border-slate-300 rounded-xl p-1.5 bg-slate-50" />
+          <button id="uploadPdrbBtn" type="button" class="px-5 py-3 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shrink-0 shadow">
+            Upload & Update PDRB Triwulanan
+          </button>
+        </div>
+
+        <div id="pdrbUploadStatus" class="hidden text-xs p-3 rounded-xl font-semibold"></div>
+      </div>
+
+      <!-- 4. Daftar Data Indikator -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-slate-200">
+          <h2 class="font-bold text-base sm:text-lg text-slate-900">4. Daftar Data & Grafik Tersimpan</h2>
+        </div>
+        <div class="table-scroll-wrapper">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[780px]">
+            <thead id="adminTableHead" class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-600"></thead>
+            <tbody id="adminTableBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
-      </section>
+      </div>
 
-      <!-- 4. Sektor -->
-      <section class="card card-pad admin-section" aria-labelledby="h-sector">
-        <div class="row-between" style="margin-bottom:16px">
+      <!-- 5. Editor Grafik Donat Struktur Ekonomi PDRB -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <h2 id="h-sector"><span class="step">4</span>Struktur ekonomi (PDRB ADHB)</h2>
-            <p class="card-sub">Komposisi persentase lapangan usaha pada grafik donat.</p>
+            <h2 class="font-bold text-base sm:text-lg text-slate-900">5. Update Grafik Struktur PDRB</h2>
+            <p class="text-xs text-slate-500">Kelola komposisi persentase lapangan usaha.</p>
           </div>
-          <button type="button" id="addSectorBtn" class="btn btn-ghost btn-sm"><i data-lucide="plus" class="icon icon-sm"></i>Tambah sektor</button>
+          <button type="button" id="addSectorBtn" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">+ Tambah Sektor</button>
         </div>
-        <form id="sectorsForm" class="stack">
-          <div id="sectorsList" class="stack" style="gap:10px"></div>
-          <div class="row-between">
-            <p id="sectorTotal" class="sector-total" aria-live="polite">Total: 0%</p>
-            <button type="submit" class="btn btn-primary" id="sectorsBtn">Simpan struktur PDRB</button>
+
+        <form id="sectorsForm" class="space-y-3">
+          <div id="sectorsList" class="space-y-3"></div>
+          <div class="pt-3">
+            <button type="submit" class="w-full sm:w-auto sm:float-right px-5 py-2.5 rounded-xl btn-bps-blue text-xs font-bold shadow">Simpan Grafik Struktur PDRB</button>
           </div>
         </form>
-      </section>
+      </div>
+
     </main>
   </div>
 
-  <!-- Konfirmasi hapus -->
-  <div id="confirmModal" class="modal-backdrop" hidden>
-    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText">
-      <h2 id="confirmTitle">Hapus indikator?</h2>
-      <p id="confirmText"></p>
-      <div class="modal-actions">
-        <button id="confirmCancel" type="button" class="btn btn-ghost">Batal</button>
-        <button id="confirmOk" type="button" class="btn btn-danger">Hapus indikator</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
-
   <script>
-    // =========================================================================
-    // KAMUS INDIKATOR STRATEGIS BPS (KATEGORI -> INDIKATOR -> SATUAN & WARNA)
-    // =========================================================================
     const INDICATOR_CATALOG = {
       'Kependudukan': [
         { nama: 'Jumlah Penduduk', satuan: 'Jiwa', color: '#002B49', chart_type: 'bar', goodDirection: 'up' },
@@ -313,403 +268,365 @@
       ]
     };
 
-    const $ = (id) => document.getElementById(id);
-    const isDark = () => document.documentElement.classList.contains('dark');
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const icons = () => { if (window.lucide) window.lucide.createIcons(); };
-    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const fmt = (v) => (v === null || v === undefined || v === '') ? '–' : Number(v).toLocaleString('id-ID', { maximumFractionDigits: 3 });
-
-    let authToken = null;
-    try { authToken = localStorage.getItem('diksi_admin_token'); } catch (_) {}
+    let authToken = localStorage.getItem('diksi_admin_token');
     let currentData = null;
     let previewChartInstance = null;
     let activeGoodDirection = 'up';
-    let lastFocus = null;
 
-    // =========================================================================
-    // UI HELPERS: toast, konfirmasi, tombol sibuk
-    // =========================================================================
-    function toast(message, type = 'success') {
-      const el = document.createElement('div');
-      el.className = 'toast ' + type;
-      el.setAttribute('role', type === 'error' ? 'alert' : 'status');
-      const icon = type === 'error' ? 'circle-x' : (type === 'info' ? 'info' : 'circle-check');
-      el.innerHTML = `<i data-lucide="${icon}" class="icon"></i><span>${esc(message)}</span>`;
-      $('toasts').appendChild(el);
-      icons();
-      setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, type === 'error' ? 6000 : 3500);
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+      initDropdownLogic();
+      if (authToken) showAdminPanel();
+    });
 
-    function setBusy(btn, busy, label) {
-      if (busy) {
-        btn.dataset.label = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = `<span class="spinner"></span><span>${esc(label || 'Menyimpan…')}</span>`;
-      } else {
-        btn.disabled = false;
-        if (btn.dataset.label) btn.innerHTML = btn.dataset.label;
-        icons();
+    function parseIndonesianNumber(raw) {
+      if (raw === null || raw === undefined || raw === '') return null;
+      if (typeof raw === 'number') return raw;
+      let str = String(raw).trim();
+      if (str === '-' || str === '') return null;
+      if (str.includes(',') && str.includes('.')) {
+        str = str.replace(/\./g, '').replace(',', '.');
+      } else if (str.includes(',')) {
+        str = str.replace(',', '.');
       }
+      const num = parseFloat(str);
+      return isNaN(num) ? null : num;
     }
 
-    function confirmDialog({ title, text, okLabel }) {
-      return new Promise((resolve) => {
-        const modal = $('confirmModal');
-        lastFocus = document.activeElement;
-        $('confirmTitle').textContent = title;
-        $('confirmText').textContent = text;
-        $('confirmOk').textContent = okLabel;
-        modal.hidden = false;
-        $('confirmCancel').focus();
+    function extractPdrbFromSheetRows(rows) {
+      const records = [];
+      const blocks = [
+        { pendekatan: 'Lapangan Usaha', colData: 0, colTahun: 1, colPeriode: 2, colNilai: 3 },
+        { pendekatan: 'Pengeluaran', colData: 5, colTahun: 6, colPeriode: 7, colNilai: 8 }
+      ];
 
-        const done = (val) => {
-          modal.hidden = true;
-          document.removeEventListener('keydown', onKey);
-          $('confirmOk').onclick = $('confirmCancel').onclick = modal.onclick = null;
-          if (lastFocus && lastFocus.focus) lastFocus.focus();
-          resolve(val);
-        };
-        const onKey = (e) => {
-          if (e.key === 'Escape') done(false);
-          if (e.key === 'Tab') {
-            const f = [$('confirmCancel'), $('confirmOk')];
-            const i = f.indexOf(document.activeElement);
-            e.preventDefault();
-            f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      blocks.forEach(b => {
+        let lastJenis = '';
+        let lastTahun = '';
+
+        for (let r = 0; r < rows.length; r++) {
+          const row = rows[r] || [];
+          const cellData = String(row[b.colData] || '').trim();
+          const cellTahun = String(row[b.colTahun] || '').trim();
+          const cellPeriode = String(row[b.colPeriode] || '').trim();
+          const cellNilai = row[b.colNilai];
+
+          if (cellData.toUpperCase().includes('ADHB') || cellData.toUpperCase().includes('BERLAKU')) {
+            lastJenis = 'ADHB';
+          } else if (cellData.toUpperCase().includes('ADHK') || cellData.toUpperCase().includes('KONSTAN')) {
+            lastJenis = 'ADHK';
           }
-        };
-        document.addEventListener('keydown', onKey);
-        $('confirmOk').onclick = () => done(true);
-        $('confirmCancel').onclick = () => done(false);
-        modal.onclick = (e) => { if (e.target === modal) done(false); };
-      });
-    }
 
-    // =========================================================================
-    // TEMA
-    // =========================================================================
-    function syncThemeButton() {
-      $('themeToggle').setAttribute('aria-label', isDark() ? 'Beralih ke mode terang' : 'Beralih ke mode gelap');
-    }
-    $('themeToggle').addEventListener('click', () => {
-      const dark = document.documentElement.classList.toggle('dark');
-      try { localStorage.setItem('diksi_theme', dark ? 'dark' : 'light'); } catch (_) {}
-      syncThemeButton();
-      updateLivePreview();
-    });
+          if (/^20\d{2}$/.test(cellTahun)) {
+            lastTahun = cellTahun;
+          }
 
-    // =========================================================================
-    // API (otomatis menangani sesi habis)
-    // =========================================================================
-    async function api(url, method, body) {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-        body: body === undefined ? undefined : JSON.stringify(body)
-      });
-      if (res.status === 401) {
-        logout('Sesi habis. Silakan masuk kembali.');
-        throw new Error('401');
-      }
-      let json = {};
-      try { json = await res.json(); } catch (_) {}
-      if (!res.ok) throw new Error(json.error || `Permintaan gagal (${res.status}).`);
-      return json;
-    }
+          const isValidPeriode = /^(Triwulan|Jumlah)/i.test(cellPeriode);
+          const parsedVal = parseIndonesianNumber(cellNilai);
 
-    function logout(message) {
-      try { localStorage.removeItem('diksi_admin_token'); } catch (_) {}
-      authToken = null;
-      if (message) { try { sessionStorage.setItem('diksi_flash', message); } catch (_) {} }
-      location.reload();
-    }
-
-    // =========================================================================
-    // LOGIN
-    // =========================================================================
-    $('pwToggle').addEventListener('click', () => {
-      const pw = $('password');
-      const show = pw.type === 'password';
-      pw.type = show ? 'text' : 'password';
-      $('pwToggle').setAttribute('aria-pressed', String(show));
-      $('pwToggle').setAttribute('aria-label', show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
-      $('pwToggle').innerHTML = `<i data-lucide="${show ? 'eye-off' : 'eye'}" class="icon"></i>`;
-      icons();
-    });
-
-    function loginError(msg) {
-      const el = $('loginError');
-      el.innerHTML = `<i data-lucide="triangle-alert" class="icon icon-sm"></i><span>${esc(msg)}</span>`;
-      el.hidden = false;
-      icons();
-    }
-
-    $('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = $('username').value.trim();
-      const password = $('password').value;
-      $('loginError').hidden = true;
-      if (!username || !password) { loginError('Isi nama pengguna dan kata sandi.'); return; }
-
-      const btn = $('loginBtn');
-      setBusy(btn, true, 'Memeriksa…');
-      try {
-        const res = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-        const result = await res.json().catch(() => ({}));
-        if (result.success) {
-          authToken = result.token;
-          try { localStorage.setItem('diksi_admin_token', authToken); } catch (_) {}
-          showAdminPanel();
-        } else {
-          loginError(result.error || 'Nama pengguna atau kata sandi salah.');
-          $('password').select();
+          if (lastJenis && lastTahun && isValidPeriode && parsedVal !== null) {
+            records.push({
+              pendekatan: b.pendekatan,
+              jenis: lastJenis,
+              tahun: lastTahun,
+              periode: cellPeriode,
+              nilai: parsedVal
+            });
+          }
         }
-      } catch (err) {
-        loginError('Server tidak dapat dihubungi. Pastikan aplikasi berjalan lalu coba lagi.');
-      } finally {
-        setBusy(btn, false);
+      });
+
+      return records;
+    }
+
+    document.getElementById('uploadPdrbBtn').addEventListener('click', async () => {
+      const fileInput = document.getElementById('pdrbFileInput');
+      const statusEl = document.getElementById('pdrbUploadStatus');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('Silakan pilih file Excel (.xlsx/.xls) atau CSV PDRB Triwulanan terlebih dahulu!');
+        return;
       }
+
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const workbook = XLSX.read(evt.target.result, { type: 'binary' });
+          const sheetName = workbook.SheetNames.find(n => n.toLowerCase().includes('triwulan')) || workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+          const extracted = extractPdrbFromSheetRows(rows);
+          if (extracted.length === 0) {
+            statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-red-100 text-red-700';
+            statusEl.textContent = 'Gagal membaca data PDRB Triwulanan. Pastikan struktur kolom sesuai dengan template Google Sheets (Data | Tahun | Periode | Nilai).';
+            statusEl.classList.remove('hidden');
+            return;
+          }
+
+          const res = await fetch('/api/pdrb-triwulanan', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            body: JSON.stringify({ pdrbTriwulanan: extracted })
+          });
+
+          if (res.ok) {
+            statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-green-100 text-green-800';
+            statusEl.textContent = `Berhasil mengimpor ${extracted.length} baris data PDRB Triwulanan ke Web Publik!`;
+            statusEl.classList.remove('hidden');
+            document.getElementById('pdrbTriwulanCount').textContent = extracted.length;
+            fileInput.value = '';
+          }
+        } catch (err) {
+          statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-red-100 text-red-700';
+          statusEl.textContent = 'Terjadi kesalahan saat memproses file: ' + err.message;
+          statusEl.classList.remove('hidden');
+        }
+      };
+      reader.readAsBinaryString(file);
     });
-
-    $('logoutBtn').addEventListener('click', () => logout());
-
-    async function showAdminPanel() {
-      $('loginSection').hidden = true;
-      $('adminDashboard').hidden = false;
-      document.title = 'Panel Admin | DIKSI 1501';
-      try {
-        await fetchAdminData();
-      } catch (err) {
-        toast('Gagal memuat data: ' + err.message, 'error');
-      }
-    }
-
-    // =========================================================================
-    // DROPDOWN KATEGORI -> NAMA INDIKATOR -> SATUAN & DELTA OTOMATIS
-    // =========================================================================
-    function toggleCustom(input, show) {
-      input.hidden = !show;
-      input.required = show;
-    }
 
     function initDropdownLogic() {
-      const catSelect = $('fKategoriSelect');
-      const namaSelect = $('fNamaSelect');
+      const catSelect = document.getElementById('fKategoriSelect');
+      const catCustom = document.getElementById('fKategoriCustom');
+      const namaSelect = document.getElementById('fNamaSelect');
+      const namaCustom = document.getElementById('fNamaCustom');
 
       catSelect.addEventListener('change', () => {
-        const custom = catSelect.value === '__custom__';
-        toggleCustom($('fKategoriCustom'), custom);
-        populateIndicatorDropdown(catSelect.value);
-        recalculateDelta();
-        updateLivePreview();
+        if (catSelect.value === '__custom__') {
+          catCustom.classList.remove('hidden');
+          catCustom.required = true;
+          populateIndicatorDropdown('__custom__');
+        } else {
+          catCustom.classList.add('hidden');
+          catCustom.required = false;
+          populateIndicatorDropdown(catSelect.value);
+        }
       });
 
       namaSelect.addEventListener('change', () => {
         if (namaSelect.value === '__custom__') {
-          toggleCustom($('fNamaCustom'), true);
-          $('fSatuan').value = '';
+          namaCustom.classList.remove('hidden');
+          namaCustom.required = true;
+          document.getElementById('fSatuan').value = '';
           activeGoodDirection = 'up';
         } else {
-          toggleCustom($('fNamaCustom'), false);
+          namaCustom.classList.add('hidden');
+          namaCustom.required = false;
           applyIndicatorMetadata(catSelect.value, namaSelect.value);
         }
         recalculateDelta();
         updateLivePreview();
       });
 
-      $('fNamaCustom').addEventListener('input', updateLivePreview);
-      $('fSatuan').addEventListener('input', () => { recalculateDelta(); updateLivePreview(); });
-      ['fChartType', 'fColor'].forEach((id) => $(id).addEventListener('input', updateLivePreview));
-      $('valueInputsGrid').addEventListener('input', () => { recalculateDelta(); updateLivePreview(); });
+      namaCustom.addEventListener('input', updateLivePreview);
+      document.getElementById('fSatuan').addEventListener('input', () => {
+        recalculateDelta();
+        updateLivePreview();
+      });
 
       populateIndicatorDropdown(catSelect.value);
     }
 
-    function populateIndicatorDropdown(category, selectedName = null) {
-      const namaSelect = $('fNamaSelect');
+    function populateIndicatorDropdown(category, selectedIndicatorName = null) {
+      const namaSelect = document.getElementById('fNamaSelect');
+      const namaCustom = document.getElementById('fNamaCustom');
       const items = INDICATOR_CATALOG[category] || [];
-      namaSelect.innerHTML = items.map((i) => `<option value="${esc(i.nama)}">${esc(i.nama)}</option>`).join('')
-        + '<option value="__custom__">+ Indikator lain (ketik manual)</option>';
 
-      if (selectedName) {
-        if (items.some((i) => i.nama === selectedName)) {
-          namaSelect.value = selectedName;
-          toggleCustom($('fNamaCustom'), false);
-          applyIndicatorMetadata(category, selectedName);
+      let optionsHtml = items.map(item => `<option value="${item.nama}">${item.nama}</option>`).join('');
+      optionsHtml += `<option value="__custom__">+ Input Nama Indikator Lainnya...</option>`;
+      namaSelect.innerHTML = optionsHtml;
+
+      if (selectedIndicatorName) {
+        const found = items.find(i => i.nama === selectedIndicatorName);
+        if (found) {
+          namaSelect.value = selectedIndicatorName;
+          namaCustom.classList.add('hidden');
+          namaCustom.required = false;
+          applyIndicatorMetadata(category, selectedIndicatorName);
         } else {
           namaSelect.value = '__custom__';
-          toggleCustom($('fNamaCustom'), true);
-          $('fNamaCustom').value = selectedName;
+          namaCustom.classList.remove('hidden');
+          namaCustom.required = true;
+          namaCustom.value = selectedIndicatorName;
         }
       } else if (items.length > 0) {
         namaSelect.value = items[0].nama;
-        toggleCustom($('fNamaCustom'), false);
+        namaCustom.classList.add('hidden');
+        namaCustom.required = false;
         applyIndicatorMetadata(category, items[0].nama);
       } else {
         namaSelect.value = '__custom__';
-        toggleCustom($('fNamaCustom'), true);
+        namaCustom.classList.remove('hidden');
+        namaCustom.required = true;
       }
     }
 
-    function applyIndicatorMetadata(category, name) {
-      const meta = (INDICATOR_CATALOG[category] || []).find((i) => i.nama === name);
+    function applyIndicatorMetadata(category, indicatorName) {
+      const items = INDICATOR_CATALOG[category] || [];
+      const meta = items.find(i => i.nama === indicatorName);
       if (!meta) return;
-      $('fSatuan').value = meta.satuan;
-      $('fColor').value = meta.color;
-      $('fChartType').value = meta.chart_type;
+
+      document.getElementById('fSatuan').value = meta.satuan;
+      document.getElementById('fColor').value = meta.color;
+      document.getElementById('fChartType').value = meta.chart_type;
       activeGoodDirection = meta.goodDirection || 'up';
       recalculateDelta();
     }
 
     function recalculateDelta() {
       if (!currentData || currentData.years.length < 2) return;
-      const pts = [];
+      const validPoints = [];
       for (let i = currentData.years.length - 1; i >= 0; i--) {
-        const el = $(`val_${i}`);
+        const el = document.getElementById(`val_${i}`);
         if (el && el.value !== '' && !isNaN(parseFloat(el.value))) {
-          pts.unshift({ val: parseFloat(el.value), year: currentData.years[i] });
-          if (pts.length === 2) break;
+          validPoints.unshift({ val: parseFloat(el.value), year: currentData.years[i] });
+          if (validPoints.length === 2) break;
         }
       }
-      if (pts.length < 2) return;
+      if (validPoints.length < 2) return;
 
-      const [prev, last] = pts;
-      const diff = last.val - prev.val;
+      const prevPoint = validPoints[0];
+      const lastPoint = validPoints[1];
+      const diff = lastPoint.val - prevPoint.val;
       const absDiff = Math.abs(diff).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const sign = diff > 0 ? '+' : (diff < 0 ? '-' : '');
-      const satuan = ($('fSatuan').value || '').toLowerCase();
-      const unitLabel = satuan.includes('persen') ? 'poin persen' : (satuan.includes('poin') ? 'poin' : satuan);
+      const satuan = (document.getElementById('fSatuan').value || '').toLowerCase();
 
-      let status;
-      if (diff === 0) status = `Stabil dibanding ${prev.year}`;
-      else if (activeGoodDirection === 'down') status = diff < 0 ? `Menurun dibanding ${prev.year}` : `Meningkat dibanding ${prev.year}`;
-      else if (activeGoodDirection === 'up') status = diff > 0 ? `Meningkat dibanding ${prev.year}` : `Menurun dibanding ${prev.year}`;
-      else status = `dibanding ${prev.year}`;
+      let unitLabel = satuan.includes('persen') ? 'poin persen' : (satuan.includes('poin') ? 'poin' : satuan);
+      let statusText = diff === 0 ? `Stabil dibanding ${prevPoint.year}` :
+        (activeGoodDirection === 'down' ? (diff < 0 ? `Menurun dibanding ${prevPoint.year}` : `Meningkat dibanding ${prevPoint.year}`) :
+        (activeGoodDirection === 'up' ? (diff > 0 ? `Meningkat dibanding ${prevPoint.year}` : `Menurun dibanding ${prevPoint.year}`) : `dibanding ${prevPoint.year}`));
 
-      $('fDelta').value = `${sign}${absDiff} ${unitLabel} (${status})`.trim();
+      document.getElementById('fDelta').value = `${sign}${absDiff} ${unitLabel} (${statusText})`.trim();
     }
 
-    const getResolvedCategory = () => $('fKategoriSelect').value === '__custom__' ? $('fKategoriCustom').value.trim() : $('fKategoriSelect').value;
-    const getResolvedNama = () => $('fNamaSelect').value === '__custom__' ? $('fNamaCustom').value.trim() : $('fNamaSelect').value;
-
-    // =========================================================================
-    // DATA
-    // =========================================================================
-    async function fetchAdminData() {
-      const res = await fetch('/api/dashboard', { cache: 'no-store' });
-      if (!res.ok) throw new Error('Server merespons ' + res.status);
-      currentData = await res.json();
-
-      $('yearInputs').innerHTML = currentData.years.map((y, idx) => `
-        <input type="text" class="field-input" data-year-idx="${idx}" value="${esc(y)}" required aria-label="Tahun ke-${idx + 1}" />`).join('');
-
-      $('valueInputsGrid').innerHTML = currentData.years.map((y, idx) => `
-        <div class="field">
-          <label for="val_${idx}" class="hint" style="font-weight:700">Tahun ${esc(y)}</label>
-          <input type="number" step="any" id="val_${idx}" class="field-input" placeholder="–" inputmode="decimal" />
-        </div>`).join('');
-
-      renderAdminTable();
-      renderSectorInputs(currentData.sectors || []);
-      recalculateDelta();
-      updateLivePreview();
-      icons();
+    function getResolvedCategory() {
+      const sel = document.getElementById('fKategoriSelect').value;
+      return sel === '__custom__' ? document.getElementById('fKategoriCustom').value.trim() : sel;
     }
 
-    function renderAdminTable() {
-      const q = ($('adminSearch').value || '').trim().toLowerCase();
-      const years = currentData.years;
-      $('adminTableHead').innerHTML = `
-        <tr>
-          <th scope="col" class="name-h">Indikator &amp; grafik</th>
-          ${years.map((y) => `<th scope="col" class="r">${esc(y)}</th>`).join('')}
-          <th scope="col" class="r">Aksi</th>
-        </tr>`;
+    function getResolvedNama() {
+      const sel = document.getElementById('fNamaSelect').value;
+      return sel === '__custom__' ? document.getElementById('fNamaCustom').value.trim() : sel;
+    }
 
-      const list = currentData.indicators.filter((i) => !q || i.nama.toLowerCase().includes(q) || i.kategori.toLowerCase().includes(q));
-      $('listCount').textContent = `${list.length} dari ${currentData.indicators.length} indikator`;
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errEl = document.getElementById('loginError');
 
-      if (list.length === 0) {
-        $('adminTableBody').innerHTML = `<tr><td colspan="${years.length + 2}"><div class="state"><i data-lucide="inbox"></i><strong>${q ? 'Tidak ada yang cocok' : 'Belum ada indikator'}</strong><p>${q ? 'Coba kata kunci lain.' : 'Gunakan form di atas untuk menambahkan indikator pertama.'}</p></div></td></tr>`;
-        icons();
-        return;
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          authToken = result.token;
+          localStorage.setItem('diksi_admin_token', authToken);
+          errEl.classList.add('hidden');
+          showAdminPanel();
+        } else {
+          errEl.textContent = result.error;
+          errEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        errEl.textContent = 'Gagal terhubung ke server.';
+        errEl.classList.remove('hidden');
       }
-
-      $('adminTableBody').innerHTML = list.map((item) => `
-        <tr>
-          <td class="name-cell">
-            <div style="font-weight:600">${esc(item.nama)} <span class="unit">(${esc(item.satuan)})</span></div>
-            <div class="hint" style="margin-top:2px"><span class="color-dot" style="background:${esc(item.color || '#005A9C')}"></span>${esc(item.kategori)} &bull; grafik ${item.chart_type === 'bar' ? 'batang' : 'garis'}</div>
-          </td>
-          ${years.map((_, i) => `<td class="r${item.values[i] == null ? ' empty' : ''}">${fmt(item.values[i])}</td>`).join('')}
-          <td>
-            <div class="actions-cell">
-              <button type="button" class="btn btn-ghost btn-sm btn-icon" data-edit="${esc(item.id)}" aria-label="Edit ${esc(item.nama)}" title="Edit"><i data-lucide="pencil" class="icon icon-sm"></i></button>
-              <button type="button" class="btn btn-sm btn-danger btn-icon" data-del="${esc(item.id)}" aria-label="Hapus ${esc(item.nama)}" title="Hapus"><i data-lucide="trash-2" class="icon icon-sm"></i></button>
-            </div>
-          </td>
-        </tr>`).join('');
-      icons();
-    }
-
-    $('adminSearch').addEventListener('input', () => { if (currentData) renderAdminTable(); });
-    $('adminTableBody').addEventListener('click', (e) => {
-      const ed = e.target.closest('[data-edit]');
-      const del = e.target.closest('[data-del]');
-      if (ed) editItem(ed.dataset.edit);
-      if (del) deleteItem(del.dataset.del);
     });
 
-    function themedColor(hex) {
-      const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i.exec(hex || '');
-      if (!m || !isDark()) return hex;
-      const [r, g, b] = [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)];
-      if ((0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.38) return hex;
-      const mix = (c) => Math.round(c + (255 - c) * 0.62);
-      return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('diksi_admin_token');
+      location.reload();
+    });
+
+    async function showAdminPanel() {
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.remove('hidden');
+      await fetchAdminData();
     }
+
+    async function fetchAdminData() {
+      const res = await fetch('/api/dashboard');
+      currentData = await res.json();
+
+      document.getElementById('pdrbTriwulanCount').textContent = (currentData.pdrbTriwulanan || []).length;
+
+      document.getElementById('yearInputs').innerHTML = currentData.years.map((y, idx) => `
+        <input type="text" data-year-idx="${idx}" value="${y}" required class="w-full sm:w-20 px-3 py-2 rounded-xl border border-slate-300 text-sm text-center font-bold">
+      `).join('');
+
+      document.getElementById('valueInputsGrid').innerHTML = currentData.years.map((y, idx) => `
+        <div>
+          <span class="block text-[11px] font-bold text-slate-500 mb-1">Tahun ${y}</span>
+          <input type="number" step="any" id="val_${idx}" placeholder="-" oninput="onValueInput()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono">
+        </div>
+      `).join('');
+
+      document.getElementById('adminTableHead').innerHTML = `
+        <tr>
+          <th class="py-3 px-4">Kategori</th>
+          <th class="py-3 px-4">Indikator & Tipe Grafik</th>
+          ${currentData.years.map(y => `<th class="py-3 px-3 text-right">${y}</th>`).join('')}
+          <th class="py-3 px-4 text-right">Aksi</th>
+        </tr>
+      `;
+
+      document.getElementById('adminTableBody').innerHTML = currentData.indicators.map(item => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-semibold whitespace-nowrap">${item.kategori}</td>
+          <td class="py-3 px-4">
+            <div class="font-semibold text-slate-900">${item.nama} <span class="text-xs font-normal text-slate-400">(${item.satuan})</span></div>
+            <div class="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-500">
+              <span class="w-2.5 h-2.5 rounded-full inline-block" style="background:${item.color || '#005A9C'}"></span>
+              <span>Grafik: <strong>${item.chart_type === 'bar' ? 'Batang' : 'Garis'}</strong></span>
+            </div>
+          </td>
+          ${item.values.map(v => `<td class="py-3 px-3 text-right font-mono">${v === null || v === undefined ? '-' : v}</td>`).join('')}
+          <td class="py-3 px-4 text-right space-x-2 whitespace-nowrap">
+            <button onclick="editItem('${item.id}')" class="px-2.5 py-1.5 rounded bg-sky-100 text-[#005A9C] text-xs font-bold hover:bg-sky-200">Edit</button>
+            <button onclick="deleteItem('${item.id}')" class="px-2.5 py-1.5 rounded bg-red-100 text-red-600 text-xs font-bold hover:bg-red-200">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+
+      renderSectorInputs(currentData.sectors);
+      recalculateDelta();
+      updateLivePreview();
+    }
+
+    window.onValueInput = function() {
+      recalculateDelta();
+      updateLivePreview();
+    };
 
     function updateLivePreview() {
       if (!currentData) return;
-      const title = getResolvedNama() || 'Pratinjau indikator baru';
-      const satuan = $('fSatuan').value || '-';
-      const chartType = $('fChartType').value;
-      const rawColor = $('fColor').value;
-      const color = themedColor(rawColor);
+      const title = getResolvedNama() || 'Pratinjau Indikator Baru';
+      const satuan = document.getElementById('fSatuan').value || '-';
+      const chartType = document.getElementById('fChartType').value;
+      const color = document.getElementById('fColor').value;
 
-      $('colorHexLabel').textContent = rawColor.toUpperCase();
-      $('previewTitle').textContent = title;
-      $('previewSubtitle').textContent = `Satuan: ${satuan}`;
-
-      if (typeof Chart === 'undefined') {
-        if (!$('previewBox').querySelector('.state')) {
-          $('adminPreviewChart').style.display = 'none';
-          $('previewBox').insertAdjacentHTML('beforeend', '<div class="state error"><strong>Pratinjau tidak tersedia</strong><p>Pustaka grafik gagal dimuat. Form tetap bisa disimpan.</p></div>');
-        }
-        return;
-      }
+      document.getElementById('colorHexLabel').textContent = color.toUpperCase();
+      document.getElementById('previewTitle').textContent = title;
+      document.getElementById('previewSubtitle').textContent = `Satuan: ${satuan}`;
 
       const values = currentData.years.map((_, idx) => {
-        const el = $(`val_${idx}`);
+        const el = document.getElementById(`val_${idx}`);
         if (!el || el.value === '') return null;
-        const p = parseFloat(el.value);
-        return isNaN(p) ? null : p;
+        const parsed = parseFloat(el.value);
+        return isNaN(parsed) ? null : parsed;
       });
 
-      const cs = getComputedStyle(document.documentElement);
-      const tick = cs.getPropertyValue('--chart-tick').trim();
-      const grid = cs.getPropertyValue('--chart-grid').trim();
-      const surface = cs.getPropertyValue('--surface').trim();
-      const isLine = chartType === 'line';
-      const withAlpha = (c, a) => c.startsWith('rgb(') ? c.replace('rgb(', 'rgba(').replace(')', `, ${a})`) : c + Math.round(a * 255).toString(16).padStart(2, '0');
-
+      const ctx = document.getElementById('adminPreviewChart').getContext('2d');
       if (previewChartInstance) previewChartInstance.destroy();
-      previewChartInstance = new Chart($('adminPreviewChart').getContext('2d'), {
+
+      previewChartInstance = new Chart(ctx, {
         type: chartType,
         data: {
           labels: currentData.years,
@@ -717,223 +634,173 @@
             label: title,
             data: values,
             borderColor: color,
-            backgroundColor: isLine ? withAlpha(color, 0.15) : withAlpha(color, 0.85),
-            borderWidth: isLine ? 3 : 0,
-            fill: isLine,
+            backgroundColor: chartType === 'line' ? color + '25' : color + 'CC',
+            borderWidth: 3,
+            fill: chartType === 'line',
             tension: 0.35,
             spanGaps: true,
-            pointRadius: 4,
-            pointBackgroundColor: color,
-            pointBorderColor: surface,
-            pointBorderWidth: 2,
-            borderRadius: isLine ? 0 : 6,
-            maxBarThickness: 44
+            borderRadius: chartType === 'bar' ? 6 : 0
           }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: reduceMotion ? false : { duration: 300 },
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: (c) => c.parsed.y === null ? 'Belum ada data' : `${fmt(c.parsed.y)} ${satuan}` } }
-          },
-          scales: {
-            x: { grid: { display: false }, ticks: { color: tick } },
-            y: { beginAtZero: !isLine, grid: { color: grid }, border: { display: false }, ticks: { color: tick, maxTicksLimit: 6 } }
-          }
-        }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
       });
     }
 
-    // =========================================================================
-    // SIMPAN: tahun, indikator, sektor
-    // =========================================================================
-    $('yearsForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const years = [...document.querySelectorAll('#yearInputs input')].map((el) => el.value.trim());
-      if (years.some((y) => !y)) { toast('Semua label tahun harus diisi.', 'error'); return; }
-      if (new Set(years).size !== years.length) { toast('Label tahun tidak boleh sama.', 'error'); return; }
-      const btn = $('yearsBtn');
-      setBusy(btn, true);
-      try {
-        await api('/api/years', 'PUT', { years });
-        toast('Seri tahun berhasil diperbarui.');
-        await fetchAdminData();
-      } catch (err) { if (err.message !== '401') toast(err.message, 'error'); }
-      finally { setBusy(btn, false); }
+    ['fChartType', 'fColor'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateLivePreview);
     });
 
-    $('indicatorForm').addEventListener('submit', async (e) => {
+    document.getElementById('yearsForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const kategori = getResolvedCategory();
-      const nama = getResolvedNama();
-      if (!kategori || !nama) { toast('Kategori dan nama indikator wajib diisi.', 'error'); return; }
+      const years = [...document.querySelectorAll('#yearInputs input')].map(el => el.value.trim());
+      const res = await fetch('/api/years', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+        body: JSON.stringify({ years })
+      });
+      if (res.ok) {
+        alert('Seri tahun berhasil diperbarui!');
+        fetchAdminData();
+      }
+    });
 
+    document.getElementById('indicatorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const editId = document.getElementById('editId').value;
       const values = currentData.years.map((_, idx) => {
-        const raw = $(`val_${idx}`).value;
+        const raw = document.getElementById(`val_${idx}`).value;
         return raw === '' ? null : parseFloat(raw);
       });
-      if (values.every((v) => v === null)) { toast('Isi minimal satu nilai tahunan.', 'error'); return; }
 
       const payload = {
-        kategori, nama,
-        satuan: $('fSatuan').value.trim(),
-        delta: $('fDelta').value.trim(),
-        chart_type: $('fChartType').value,
-        color: $('fColor').value,
-        insight: $('fInsight').value.trim(),
+        kategori: getResolvedCategory(),
+        nama: getResolvedNama(),
+        satuan: document.getElementById('fSatuan').value.trim(),
+        delta: document.getElementById('fDelta').value.trim(),
+        chart_type: document.getElementById('fChartType').value,
+        color: document.getElementById('fColor').value,
+        insight: document.getElementById('fInsight').value.trim(),
         values
       };
-      const editId = $('editId').value;
-      const btn = $('saveBtn');
-      setBusy(btn, true);
-      try {
-        await api(editId ? `/api/indicators/${encodeURIComponent(editId)}` : '/api/indicators', editId ? 'PUT' : 'POST', payload);
+
+      const url = editId ? `/api/indicators/${editId}` : '/api/indicators';
+      const method = editId ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
         resetForm();
         await fetchAdminData();
-        toast(editId ? 'Perubahan indikator tersimpan dan sudah tampil di web publik.' : 'Indikator baru ditambahkan ke web publik.');
-      } catch (err) { if (err.message !== '401') toast(err.message, 'error'); }
-      finally { setBusy(btn, false); }
+        alert('Data & grafik indikator berhasil diperbarui!');
+      } else if (res.status === 401) {
+        alert('Sesi habis, silakan login ulang.');
+        localStorage.removeItem('diksi_admin_token');
+        location.reload();
+      }
     });
 
-    function editItem(id) {
-      const item = currentData.indicators.find((i) => i.id === id);
+    window.editItem = function(id) {
+      const item = currentData.indicators.find(i => i.id === id);
       if (!item) return;
 
-      $('editId').value = item.id;
-      $('formTitleText').textContent = `Edit: ${item.nama}`;
-      $('cancelEditBtn').hidden = false;
+      document.getElementById('editId').value = item.id;
+      document.getElementById('formTitle').textContent = `Edit: ${item.nama}`;
+      document.getElementById('cancelEditBtn').classList.remove('hidden');
 
-      const catSelect = $('fKategoriSelect');
+      const catSelect = document.getElementById('fKategoriSelect');
+      const catCustom = document.getElementById('fKategoriCustom');
+
       if (INDICATOR_CATALOG[item.kategori]) {
         catSelect.value = item.kategori;
-        toggleCustom($('fKategoriCustom'), false);
+        catCustom.classList.add('hidden');
+        catCustom.required = false;
         populateIndicatorDropdown(item.kategori, item.nama);
       } else {
         catSelect.value = '__custom__';
-        toggleCustom($('fKategoriCustom'), true);
-        $('fKategoriCustom').value = item.kategori;
+        catCustom.classList.remove('hidden');
+        catCustom.required = true;
+        catCustom.value = item.kategori;
         populateIndicatorDropdown('__custom__', item.nama);
       }
 
-      $('fSatuan').value = item.satuan;
-      $('fDelta').value = item.delta || '';
-      $('fChartType').value = item.chart_type || 'line';
-      $('fColor').value = item.color || '#005A9C';
-      $('fInsight').value = item.insight || '';
+      document.getElementById('fSatuan').value = item.satuan;
+      document.getElementById('fDelta').value = item.delta;
+      document.getElementById('fChartType').value = item.chart_type || 'line';
+      document.getElementById('fColor').value = item.color || '#005A9C';
+      document.getElementById('fInsight').value = item.insight;
+
       item.values.forEach((v, idx) => {
-        const el = $(`val_${idx}`);
+        const el = document.getElementById(`val_${idx}`);
         if (el) el.value = (v === null || v === undefined) ? '' : v;
       });
 
       updateLivePreview();
-      $('formTitle').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-      $('fKategoriSelect').focus({ preventScroll: true });
-    }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
-    async function deleteItem(id) {
-      const item = currentData.indicators.find((i) => i.id === id);
-      if (!item) return;
-      const ok = await confirmDialog({
-        title: 'Hapus indikator ini?',
-        text: `"${item.nama}" dan grafiknya akan dihapus dari web publik. Tindakan ini tidak dapat dibatalkan.`,
-        okLabel: 'Hapus indikator'
+    window.deleteItem = async function(id) {
+      if (!confirm('Yakin ingin menghapus indikator dan grafiknya?')) return;
+      const res = await fetch(`/api/indicators/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${authToken}` }
       });
-      if (!ok) return;
-      try {
-        await api(`/api/indicators/${encodeURIComponent(id)}`, 'DELETE');
-        if ($('editId').value === id) resetForm();
-        await fetchAdminData();
-        toast('Indikator dihapus.');
-      } catch (err) { if (err.message !== '401') toast(err.message, 'error'); }
-    }
+      if (res.ok) fetchAdminData();
+    };
 
     function resetForm() {
-      $('indicatorForm').reset();
-      $('editId').value = '';
-      $('formTitleText').textContent = 'Tambah indikator baru';
-      $('cancelEditBtn').hidden = true;
-      toggleCustom($('fKategoriCustom'), false);
-      toggleCustom($('fNamaCustom'), false);
-      $('fKategoriSelect').value = 'Kependudukan';
+      document.getElementById('indicatorForm').reset();
+      document.getElementById('editId').value = '';
+      document.getElementById('formTitle').textContent = '2. Input / Edit Data & Grafik';
+      document.getElementById('cancelEditBtn').classList.add('hidden');
+      document.getElementById('fKategoriCustom').classList.add('hidden');
+      document.getElementById('fNamaCustom').classList.add('hidden');
       populateIndicatorDropdown('Kependudukan');
       recalculateDelta();
       updateLivePreview();
     }
-    $('cancelEditBtn').addEventListener('click', resetForm);
-
-    // ---- Sektor ----
-    function sectorRowHtml(s) {
-      return `
-        <div class="sector-row">
-          <input type="text" class="field-input sec-label" placeholder="Nama lapangan usaha" aria-label="Nama lapangan usaha" value="${esc(s.label)}" required />
-          <input type="number" step="any" class="field-input sec-val num" placeholder="%" aria-label="Persentase" value="${esc(s.value)}" />
-          <input type="color" class="sec-color" aria-label="Warna sektor" value="${esc(s.color)}" />
-          <button type="button" class="btn btn-ghost btn-icon sec-del" aria-label="Hapus sektor" style="width:44px"><i data-lucide="trash-2" class="icon icon-sm"></i></button>
-        </div>`;
-    }
+    document.getElementById('cancelEditBtn').addEventListener('click', resetForm);
 
     function renderSectorInputs(sectors) {
-      $('sectorsList').innerHTML = sectors.map(sectorRowHtml).join('');
-      icons();
-      updateSectorTotal();
+      document.getElementById('sectorsList').innerHTML = sectors.map((s) => `
+        <div class="sector-row grid grid-cols-12 gap-2 items-center bg-slate-50 sm:bg-transparent p-2 sm:p-0 rounded-xl">
+          <input type="text" placeholder="Nama Lapangan Usaha" value="${s.label}" class="sec-label col-span-12 sm:col-span-7 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm">
+          <input type="number" step="any" placeholder="%" value="${s.value}" class="sec-val col-span-6 sm:col-span-3 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-mono">
+          <input type="color" value="${s.color}" class="sec-color col-span-3 sm:col-span-1 w-full h-10 p-1 rounded-lg border border-slate-300 bg-white">
+          <button type="button" onclick="this.parentElement.remove()" class="col-span-3 sm:col-span-1 text-red-500 font-bold text-xs text-center hover:underline">Hapus</button>
+        </div>
+      `).join('');
     }
 
-    function updateSectorTotal() {
-      const total = [...document.querySelectorAll('.sec-val')].reduce((a, el) => a + (parseFloat(el.value) || 0), 0);
-      const el = $('sectorTotal');
-      const rounded = Math.round(total * 100) / 100;
-      const ok = Math.abs(rounded - 100) < 0.01;
-      el.textContent = `Total: ${rounded.toLocaleString('id-ID')}%` + (ok ? ' • sesuai' : ' • idealnya 100%');
-      el.classList.toggle('warn', !ok);
-    }
-
-    $('sectorsList').addEventListener('input', updateSectorTotal);
-    $('sectorsList').addEventListener('click', (e) => {
-      const del = e.target.closest('.sec-del');
-      if (del) { del.closest('.sector-row').remove(); updateSectorTotal(); }
+    document.getElementById('addSectorBtn').addEventListener('click', () => {
+      const div = document.createElement('div');
+      div.className = 'sector-row grid grid-cols-12 gap-2 items-center bg-slate-50 sm:bg-transparent p-2 sm:p-0 rounded-xl';
+      div.innerHTML = `
+        <input type="text" placeholder="Nama Lapangan Usaha Baru" class="sec-label col-span-12 sm:col-span-7 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm">
+        <input type="number" step="any" placeholder="0.00" value="0" class="sec-val col-span-6 sm:col-span-3 px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-mono">
+        <input type="color" value="#0093DD" class="sec-color col-span-3 sm:col-span-1 w-full h-10 p-1 rounded-lg border border-slate-300 bg-white">
+        <button type="button" onclick="this.parentElement.remove()" class="col-span-3 sm:col-span-1 text-red-500 font-bold text-xs text-center hover:underline">Hapus</button>
+      `;
+      document.getElementById('sectorsList').appendChild(div);
     });
 
-    $('addSectorBtn').addEventListener('click', () => {
-      $('sectorsList').insertAdjacentHTML('beforeend', sectorRowHtml({ label: '', value: 0, color: '#0093DD' }));
-      icons();
-      const rows = document.querySelectorAll('.sector-row');
-      rows[rows.length - 1].querySelector('.sec-label').focus();
-      updateSectorTotal();
-    });
-
-    $('sectorsForm').addEventListener('submit', async (e) => {
+    document.getElementById('sectorsForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const sectors = [...document.querySelectorAll('.sector-row')].map((row) => ({
-        label: row.querySelector('.sec-label').value.trim(),
+      const sectors = [...document.querySelectorAll('.sector-row')].map(row => ({
+        label: row.querySelector('.sec-label').value,
         value: parseFloat(row.querySelector('.sec-val').value) || 0,
         color: row.querySelector('.sec-color').value
-      })).filter((s) => s.label);
-      if (sectors.length === 0) { toast('Tambahkan minimal satu sektor.', 'error'); return; }
-      const btn = $('sectorsBtn');
-      setBusy(btn, true);
-      try {
-        await api('/api/sectors', 'PUT', { sectors });
-        toast('Struktur ekonomi PDRB berhasil diperbarui.');
-        await fetchAdminData();
-      } catch (err) { if (err.message !== '401') toast(err.message, 'error'); }
-      finally { setBusy(btn, false); }
-    });
+      }));
 
-    // =========================================================================
-    // INIT
-    // =========================================================================
-    document.addEventListener('DOMContentLoaded', () => {
-      syncThemeButton();
-      initDropdownLogic();
-      icons();
-      try {
-        const flash = sessionStorage.getItem('diksi_flash');
-        if (flash) { sessionStorage.removeItem('diksi_flash'); loginError(flash); }
-      } catch (_) {}
-      if (authToken) showAdminPanel();
-      else $('username').focus();
+      const res = await fetch('/api/sectors', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+        body: JSON.stringify({ sectors })
+      });
+      if (res.ok) alert('Grafik Struktur Ekonomi PDRB berhasil diperbarui!');
     });
   </script>
 </body>

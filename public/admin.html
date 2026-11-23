@@ -6,7 +6,6 @@
   <title>Admin Backend | DIKSI 1501 BPS Kabupaten Kerinci</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
@@ -57,7 +56,7 @@
       
       <!-- 1. Pengaturan Tahun Kolom -->
       <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
-        <h2 class="font-bold text-base sm:text-lg text-slate-900">1. Pengaturan Seri Tahun (Indikator Tahunan)</h2>
+        <h2 class="font-bold text-base sm:text-lg text-slate-900">1. Pengaturan Seri Tahun</h2>
         <p class="text-xs text-slate-500 mb-3">Ubah label tahun yang tampil di grafik tren dan tabel publik.</p>
         <form id="yearsForm" class="space-y-3">
           <div id="yearInputs" class="grid grid-cols-3 sm:flex sm:flex-wrap gap-2"></div>
@@ -157,35 +156,10 @@
         </div>
       </div>
 
-      <!-- 3. UPLOAD FILE EXCEL / CSV PDRB TRIWULANAN -->
-      <div class="bg-white rounded-2xl border-2 border-dashed border-[#0093DD] p-4 sm:p-6 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <span class="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-[#005A9C] text-[11px] font-bold mb-1">IMPORT OTOMATIS SPREADSHEET</span>
-            <h2 class="font-bold text-base sm:text-lg text-slate-900">3. Upload File PDRB Triwulanan (.xlsx / .xls / .csv)</h2>
-            <p class="text-xs text-slate-500 mt-0.5">
-              Unggah langsung file Excel dari Google Sheets Anda (berisi tabel <strong>PDRB Triwulanan Lapangan Usaha</strong> & <strong>Pengeluaran</strong>, baik ADHB maupun ADHK). Sel yang ter-merge otomatis terbaca.
-            </p>
-          </div>
-          <div class="text-xs bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 shrink-0">
-            Data tersimpan saat ini: <strong id="pdrbTriwulanCount" class="text-[#005A9C]">0</strong> baris
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          <input id="pdrbFileInput" type="file" accept=".xlsx,.xls,.csv" class="block w-full text-xs text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-100 file:text-[#005A9C] hover:file:bg-sky-200 border border-slate-300 rounded-xl p-1.5 bg-slate-50" />
-          <button id="uploadPdrbBtn" type="button" class="px-5 py-3 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shrink-0 shadow">
-            Upload & Update PDRB Triwulanan
-          </button>
-        </div>
-
-        <div id="pdrbUploadStatus" class="hidden text-xs p-3 rounded-xl font-semibold"></div>
-      </div>
-
-      <!-- 4. Daftar Data Indikator -->
+      <!-- 3. Daftar Data Indikator -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-4 sm:p-6 border-b border-slate-200">
-          <h2 class="font-bold text-base sm:text-lg text-slate-900">4. Daftar Data & Grafik Tersimpan</h2>
+          <h2 class="font-bold text-base sm:text-lg text-slate-900">3. Daftar Data & Grafik Tersimpan</h2>
         </div>
         <div class="table-scroll-wrapper">
           <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[780px]">
@@ -195,11 +169,11 @@
         </div>
       </div>
 
-      <!-- 5. Editor Grafik Donat Struktur Ekonomi PDRB -->
+      <!-- 4. Editor Grafik Donat Struktur Ekonomi PDRB -->
       <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div>
-            <h2 class="font-bold text-base sm:text-lg text-slate-900">5. Update Grafik Struktur PDRB</h2>
+            <h2 class="font-bold text-base sm:text-lg text-slate-900">4. Update Grafik Struktur PDRB</h2>
             <p class="text-xs text-slate-500">Kelola komposisi persentase lapangan usaha.</p>
           </div>
           <button type="button" id="addSectorBtn" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700">+ Tambah Sektor</button>
@@ -256,7 +230,7 @@
         { nama: 'Angka Partisipasi Sekolah (APS) 16-18 Tahun', satuan: 'Persen', color: '#68B92E', chart_type: 'line', goodDirection: 'up' }
       ],
       'PDRB': [
-        { nama: 'Pertumbuhan Ekonomi', satuan: 'Persen', color: '#68B92E', chart_type: 'bar', goodDirection: 'up' },
+        { nama: 'Pertumbuhan Ekonomi Tahunan', satuan: 'Persen', color: '#68B92E', chart_type: 'bar', goodDirection: 'up' },
         { nama: 'PDRB Atas Dasar Harga Berlaku (ADHB)', satuan: 'Miliar Rupiah', color: '#005A9C', chart_type: 'bar', goodDirection: 'up' },
         { nama: 'PDRB Atas Dasar Harga Konstan (ADHK)', satuan: 'Miliar Rupiah', color: '#0093DD', chart_type: 'bar', goodDirection: 'up' },
         { nama: 'PDRB ADHB Per Kapita', satuan: 'Juta Rupiah', color: '#002B49', chart_type: 'line', goodDirection: 'up' }
@@ -276,114 +250,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       initDropdownLogic();
       if (authToken) showAdminPanel();
-    });
-
-    function parseIndonesianNumber(raw) {
-      if (raw === null || raw === undefined || raw === '') return null;
-      if (typeof raw === 'number') return raw;
-      let str = String(raw).trim();
-      if (str === '-' || str === '') return null;
-      if (str.includes(',') && str.includes('.')) {
-        str = str.replace(/\./g, '').replace(',', '.');
-      } else if (str.includes(',')) {
-        str = str.replace(',', '.');
-      }
-      const num = parseFloat(str);
-      return isNaN(num) ? null : num;
-    }
-
-    function extractPdrbFromSheetRows(rows) {
-      const records = [];
-      const blocks = [
-        { pendekatan: 'Lapangan Usaha', colData: 0, colTahun: 1, colPeriode: 2, colNilai: 3 },
-        { pendekatan: 'Pengeluaran', colData: 5, colTahun: 6, colPeriode: 7, colNilai: 8 }
-      ];
-
-      blocks.forEach(b => {
-        let lastJenis = '';
-        let lastTahun = '';
-
-        for (let r = 0; r < rows.length; r++) {
-          const row = rows[r] || [];
-          const cellData = String(row[b.colData] || '').trim();
-          const cellTahun = String(row[b.colTahun] || '').trim();
-          const cellPeriode = String(row[b.colPeriode] || '').trim();
-          const cellNilai = row[b.colNilai];
-
-          if (cellData.toUpperCase().includes('ADHB') || cellData.toUpperCase().includes('BERLAKU')) {
-            lastJenis = 'ADHB';
-          } else if (cellData.toUpperCase().includes('ADHK') || cellData.toUpperCase().includes('KONSTAN')) {
-            lastJenis = 'ADHK';
-          }
-
-          if (/^20\d{2}$/.test(cellTahun)) {
-            lastTahun = cellTahun;
-          }
-
-          const isValidPeriode = /^(Triwulan|Jumlah)/i.test(cellPeriode);
-          const parsedVal = parseIndonesianNumber(cellNilai);
-
-          if (lastJenis && lastTahun && isValidPeriode && parsedVal !== null) {
-            records.push({
-              pendekatan: b.pendekatan,
-              jenis: lastJenis,
-              tahun: lastTahun,
-              periode: cellPeriode,
-              nilai: parsedVal
-            });
-          }
-        }
-      });
-
-      return records;
-    }
-
-    document.getElementById('uploadPdrbBtn').addEventListener('click', async () => {
-      const fileInput = document.getElementById('pdrbFileInput');
-      const statusEl = document.getElementById('pdrbUploadStatus');
-      const file = fileInput.files[0];
-
-      if (!file) {
-        alert('Silakan pilih file Excel (.xlsx/.xls) atau CSV PDRB Triwulanan terlebih dahulu!');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = async (evt) => {
-        try {
-          const workbook = XLSX.read(evt.target.result, { type: 'binary' });
-          const sheetName = workbook.SheetNames.find(n => n.toLowerCase().includes('triwulan')) || workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-
-          const extracted = extractPdrbFromSheetRows(rows);
-          if (extracted.length === 0) {
-            statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-red-100 text-red-700';
-            statusEl.textContent = 'Gagal membaca data PDRB Triwulanan. Pastikan struktur kolom sesuai dengan template Google Sheets (Data | Tahun | Periode | Nilai).';
-            statusEl.classList.remove('hidden');
-            return;
-          }
-
-          const res = await fetch('/api/pdrb-triwulanan', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
-            body: JSON.stringify({ pdrbTriwulanan: extracted })
-          });
-
-          if (res.ok) {
-            statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-green-100 text-green-800';
-            statusEl.textContent = `Berhasil mengimpor ${extracted.length} baris data PDRB Triwulanan ke Web Publik!`;
-            statusEl.classList.remove('hidden');
-            document.getElementById('pdrbTriwulanCount').textContent = extracted.length;
-            fileInput.value = '';
-          }
-        } catch (err) {
-          statusEl.className = 'text-xs p-3 rounded-xl font-semibold bg-red-100 text-red-700';
-          statusEl.textContent = 'Terjadi kesalahan saat memproses file: ' + err.message;
-          statusEl.classList.remove('hidden');
-        }
-      };
-      reader.readAsBinaryString(file);
     });
 
     function initDropdownLogic() {
@@ -554,8 +420,6 @@
     async function fetchAdminData() {
       const res = await fetch('/api/dashboard');
       currentData = await res.json();
-
-      document.getElementById('pdrbTriwulanCount').textContent = (currentData.pdrbTriwulanan || []).length;
 
       document.getElementById('yearInputs').innerHTML = currentData.years.map((y, idx) => `
         <input type="text" data-year-idx="${idx}" value="${y}" required class="w-full sm:w-20 px-3 py-2 rounded-xl border border-slate-300 text-sm text-center font-bold">

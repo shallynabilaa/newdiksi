@@ -50,193 +50,57 @@ const FALLBACK_DATA = {
     { label: 'Konstruksi', value: 9.80, color: '#0093DD' },
     { label: 'Administrasi Pemerintahan', value: 8.45, color: '#F58220' },
     { label: 'Lapangan Usaha Lainnya', value: 18.90, color: '#94a3b8' }
-  ],
-  pdrbTriwulanan: []
+  ]
 };
 
 let dashboardData = FALLBACK_DATA;
 let mainChartInstance = null;
 let sectorChartInstance = null;
 let inflationChartInstance = null;
-let pdrbTriwulanChartInstance = null;
 let currentIndicatorId = null;
 let currentChartType = 'line';
 let lastKnownTimestamp = null;
-
 let currentTablePage = 1;
 const ITEMS_PER_PAGE = 7;
-
 let currentInflationPage = 1;
 const INFLATION_ITEMS_PER_PAGE = 12;
-
-let currentPdrbPage = 1;
-const PDRB_ITEMS_PER_PAGE = 10;
 
 document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   await loadDashboardData();
   setupEvents();
   renderInflationSection();
-  renderPdrbTriwulanSection();
   if (window.lucide) lucide.createIcons();
 
   setInterval(checkForUpdates, 10000);
 });
 
 window.switchMainTab = function(tabName, scrollTargetId = null) {
-  const panels = {
-    strategis: document.getElementById('tabPanelStrategis'),
-    pdrbTriwulan: document.getElementById('tabPanelPdrbTriwulan'),
-    inflasi: document.getElementById('tabPanelInflasi')
-  };
-  const buttons = {
-    strategis: document.getElementById('tabBtnStrategis'),
-    pdrbTriwulan: document.getElementById('tabBtnPdrbTriwulan'),
-    inflasi: document.getElementById('tabBtnInflasi')
-  };
+  const tabStrategis = document.getElementById('tabPanelStrategis');
+  const tabInflasi = document.getElementById('tabPanelInflasi');
+  const btnStrategis = document.getElementById('tabBtnStrategis');
+  const btnInflasi = document.getElementById('tabBtnInflasi');
 
   const activeBtnClass = 'py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all bg-[#005A9C] text-white shadow';
   const inactiveBtnClass = 'py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800';
 
-  Object.keys(panels).forEach(key => {
-    if (key === tabName) {
-      panels[key]?.classList.remove('hidden');
-      if (buttons[key]) buttons[key].className = activeBtnClass;
-    } else {
-      panels[key]?.classList.add('hidden');
-      if (buttons[key]) buttons[key].className = inactiveBtnClass;
-    }
-  });
-
-  if (tabName === 'inflasi') renderInflationChart();
-  if (tabName === 'pdrbTriwulan') renderPdrbTriwulanChart();
+  if (tabName === 'inflasi') {
+    tabStrategis.classList.add('hidden');
+    tabInflasi.classList.remove('hidden');
+    btnStrategis.className = inactiveBtnClass;
+    btnInflasi.className = activeBtnClass;
+    renderInflationChart();
+  } else {
+    tabInflasi.classList.add('hidden');
+    tabStrategis.classList.remove('hidden');
+    btnInflasi.className = inactiveBtnClass;
+    btnStrategis.className = activeBtnClass;
+  }
 
   if (scrollTargetId) {
     const el = document.getElementById(scrollTargetId);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
-};
-
-function renderPdrbTriwulanSection() {
-  const list = dashboardData.pdrbTriwulanan || [];
-  const tahunSelect = document.getElementById('pdrbTahunFilter');
-  if (tahunSelect) {
-    const prevVal = tahunSelect.value;
-    const years = [...new Set(list.map(r => r.tahun))].sort();
-    tahunSelect.innerHTML = `<option value="all">Semua Tahun (${years.join(', ')})</option>` +
-      years.map(y => `<option value="${y}">Tahun ${y}</option>`).join('');
-    if (prevVal && (prevVal === 'all' || years.includes(prevVal))) tahunSelect.value = prevVal;
-  }
-  renderPdrbTriwulanChart();
-  renderPdrbTriwulanTable();
-}
-
-function getFilteredPdrbTriwulan(excludeJumlah = false) {
-  const list = dashboardData.pdrbTriwulanan || [];
-  const pendekatan = document.getElementById('pdrbPendekatanFilter')?.value || 'Lapangan Usaha';
-  const jenis = document.getElementById('pdrbJenisFilter')?.value || 'ADHB';
-  const tahun = document.getElementById('pdrbTahunFilter')?.value || 'all';
-
-  return list.filter(r => {
-    const matchPendekatan = r.pendekatan === pendekatan;
-    const matchJenis = r.jenis === jenis;
-    const matchTahun = tahun === 'all' || r.tahun === tahun;
-    const matchPeriode = excludeJumlah ? !r.periode.toLowerCase().includes('jumlah') : true;
-    return matchPendekatan && matchJenis && matchTahun && matchPeriode;
-  });
-}
-
-function renderPdrbTriwulanChart() {
-  const canvas = document.getElementById('pdrbTriwulanChart');
-  if (!canvas || typeof Chart === 'undefined') return;
-
-  const filtered = getFilteredPdrbTriwulan(true);
-  const labels = filtered.map(r => `${r.tahun} ${r.periode.replace('Triwulan ', 'Tw ')}`);
-  const values = filtered.map(r => r.nilai);
-
-  const pendekatan = document.getElementById('pdrbPendekatanFilter')?.value || 'Lapangan Usaha';
-  const jenis = document.getElementById('pdrbJenisFilter')?.value || 'ADHB';
-
-  const ctx = canvas.getContext('2d');
-  if (pdrbTriwulanChartInstance) pdrbTriwulanChartInstance.destroy();
-
-  pdrbTriwulanChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: `PDRB ${pendekatan} (${jenis}) - Miliar Rp`,
-        data: values,
-        backgroundColor: jenis === 'ADHB' ? '#005A9CCC' : '#68B92ECC',
-        borderColor: jenis === 'ADHB' ? '#005A9C' : '#68B92E',
-        borderWidth: 2,
-        borderRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: true } }
-    }
-  });
-}
-
-function renderPdrbTriwulanTable() {
-  const tbody = document.getElementById('pdrbTriwulanTableBody');
-  const paginationEl = document.getElementById('pdrbTriwulanPagination');
-  if (!tbody) return;
-
-  const filtered = getFilteredPdrbTriwulan(false);
-  if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400">Belum ada data PDRB Triwulanan untuk pilihan ini. Silakan upload file Excel/CSV melalui Panel Admin.</td></tr>`;
-    if (paginationEl) paginationEl.innerHTML = '';
-    return;
-  }
-
-  const totalPages = Math.ceil(filtered.length / PDRB_ITEMS_PER_PAGE);
-  if (currentPdrbPage > totalPages) currentPdrbPage = totalPages;
-  if (currentPdrbPage < 1) currentPdrbPage = 1;
-
-  const startIdx = (currentPdrbPage - 1) * PDRB_ITEMS_PER_PAGE;
-  const endIdx = Math.min(startIdx + PDRB_ITEMS_PER_PAGE, filtered.length);
-  const pageItems = filtered.slice(startIdx, endIdx);
-
-  tbody.innerHTML = pageItems.map(r => {
-    const isTotal = r.periode.toLowerCase().includes('jumlah');
-    return `
-      <tr class="${isTotal ? 'bg-sky-50/70 dark:bg-slate-800/80 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}">
-        <td class="py-3 px-4">${r.pendekatan}</td>
-        <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-xs font-semibold ${r.jenis === 'ADHB' ? 'bg-sky-100 text-[#005A9C]' : 'bg-green-100 text-[#68B92E]'}">${r.jenis}</span></td>
-        <td class="py-3 px-4 font-bold">${r.tahun}</td>
-        <td class="py-3 px-4">${r.periode}</td>
-        <td class="py-3 px-4 text-right font-mono">${Number(r.nilai).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-      </tr>
-    `;
-  }).join('');
-
-  if (paginationEl) {
-    let pageButtons = '';
-    for (let p = 1; p <= totalPages; p++) {
-      const activeClass = p === currentPdrbPage
-        ? 'bg-[#005A9C] text-white border-[#005A9C] shadow-sm'
-        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100';
-      pageButtons += `<button type="button" onclick="goToPdrbPage(${p})" class="w-8 h-8 rounded-lg border text-xs font-bold ${activeClass}">${p}</button>`;
-    }
-
-    paginationEl.innerHTML = `
-      <div class="text-slate-500">Menampilkan <strong>${startIdx + 1}–${endIdx}</strong> dari <strong>${filtered.length}</strong> periode</div>
-      <div class="flex items-center gap-1.5 flex-wrap justify-center">
-        <button type="button" onclick="goToPdrbPage(${currentPdrbPage - 1})" ${currentPdrbPage === 1 ? 'disabled' : ''} class="px-3 h-8 rounded-lg border border-slate-300 bg-white dark:bg-slate-800 text-xs font-semibold disabled:opacity-40">← Sebelumnya</button>
-        ${pageButtons}
-        <button type="button" onclick="goToPdrbPage(${currentPdrbPage + 1})" ${currentPdrbPage === totalPages ? 'disabled' : ''} class="px-3 h-8 rounded-lg border border-slate-300 bg-white dark:bg-slate-800 text-xs font-semibold disabled:opacity-40">Berikutnya →</button>
-      </div>
-    `;
-  }
-}
-
-window.goToPdrbPage = function(page) {
-  currentPdrbPage = page;
-  renderPdrbTriwulanTable();
 };
 
 function renderInflationSection() {
@@ -373,7 +237,6 @@ async function checkForUpdates() {
       const badgeEl = document.getElementById('lastUpdatedBadge');
       if (badgeEl) badgeEl.textContent = dashboardData.lastUpdated;
       renderAll(true);
-      renderPdrbTriwulanSection();
     }
   } catch (_) {}
 }
@@ -651,14 +514,6 @@ function setupEvents() {
   document.getElementById('tableSearch')?.addEventListener('input', () => { currentTablePage = 1; renderTable(); });
   document.getElementById('tableCategoryFilter')?.addEventListener('change', () => { currentTablePage = 1; renderTable(); });
 
-  ['pdrbPendekatanFilter', 'pdrbJenisFilter', 'pdrbTahunFilter'].forEach(id => {
-    document.getElementById(id)?.addEventListener('change', () => {
-      currentPdrbPage = 1;
-      renderPdrbTriwulanChart();
-      renderPdrbTriwulanTable();
-    });
-  });
-
   document.getElementById('inflationYearFilterChart')?.addEventListener('change', renderInflationChart);
   document.getElementById('inflationYearFilterTable')?.addEventListener('change', () => { currentInflationPage = 1; renderInflationTable(); });
 
@@ -695,34 +550,6 @@ function setupEvents() {
         <tbody>${rowsHtml}</tbody>
       </table>
     `, 'DIKSI_1501_Kerinci_2018_2026.xls');
-  });
-
-  document.getElementById('exportPdrbTriwulanExcelBtn')?.addEventListener('click', () => {
-    const rows = (dashboardData.pdrbTriwulanan || []).map(r => `
-      <tr>
-        <td style="border:1px solid #cbd5e1;padding:6px;">${r.pendekatan}</td>
-        <td style="border:1px solid #cbd5e1;padding:6px;">${r.jenis}</td>
-        <td style="border:1px solid #cbd5e1;padding:6px;text-align:center;">${r.tahun}</td>
-        <td style="border:1px solid #cbd5e1;padding:6px;">${r.periode}</td>
-        <td style="border:1px solid #cbd5e1;padding:6px;text-align:right;">${r.nilai}</td>
-      </tr>
-    `).join('');
-
-    downloadExcelHtml(`
-      <table>
-        <thead>
-          <tr><th colspan="5" style="font-size:13pt;font-weight:bold;text-align:left;padding:8px;">PDRB TRIWULANAN KABUPATEN KERINCI (MILIAR RUPIAH)</th></tr>
-          <tr>
-            <th style="background-color:#002B49;color:#ffffff;border:1px solid #cbd5e1;padding:8px;">Pendekatan</th>
-            <th style="background-color:#002B49;color:#ffffff;border:1px solid #cbd5e1;padding:8px;">Jenis</th>
-            <th style="background-color:#002B49;color:#ffffff;border:1px solid #cbd5e1;padding:8px;">Tahun</th>
-            <th style="background-color:#002B49;color:#ffffff;border:1px solid #cbd5e1;padding:8px;">Periode</th>
-            <th style="background-color:#002B49;color:#ffffff;border:1px solid #cbd5e1;padding:8px;text-align:right;">Nilai</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    `, 'PDRB_Triwulanan_DIKSI_1501.xls');
   });
 
   document.getElementById('exportInflationExcelBtn')?.addEventListener('click', () => {

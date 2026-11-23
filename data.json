@@ -1,0 +1,834 @@
+{
+  "lastUpdated": "23 Nov 2026, 12.04",
+  "years": [
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
+  "indicators": [
+    {
+      "id": "penduduk",
+      "kategori": "Kependudukan",
+      "nama": "Jumlah Penduduk",
+      "satuan": "Jiwa",
+      "delta": "+1.500 jiwa dibanding 2024",
+      "chart_type": "bar",
+      "color": "#002B49",
+      "insight": "Jumlah penduduk Kabupaten Kerinci terus bertumbuh dari 237.791 jiwa (2018) menjadi 258.200 jiwa (2025).",
+      "values": [
+        237791,
+        238882,
+        250259,
+        251911,
+        253863,
+        255796,
+        256700,
+        258200,
+        null
+      ]
+    },
+    {
+      "id": "ipm",
+      "kategori": "IPM",
+      "nama": "Indeks Pembangunan Manusia (IPM)",
+      "satuan": "Poin",
+      "delta": "+0,59 poin (75,69 di 2026)",
+      "chart_type": "line",
+      "color": "#005A9C",
+      "insight": "IPM Kabupaten Kerinci meningkat konsisten dari 70,59 (2018) hingga mencapai 75,69 pada tahun 2026.",
+      "values": [
+        70.59,
+        70.95,
+        72.47,
+        72.72,
+        73.24,
+        73.77,
+        74.33,
+        75.1,
+        75.69
+      ]
+    },
+    {
+      "id": "kemiskinan",
+      "kategori": "Kemiskinan",
+      "nama": "Persentase Penduduk Miskin (P0)",
+      "satuan": "Persen",
+      "delta": "8,00% pada tahun 2026",
+      "chart_type": "line",
+      "color": "#F58220",
+      "insight": "Persentase penduduk miskin Kabupaten Kerinci tercatat sebesar 7,48% pada 2025 dan 8,00% pada 2026.",
+      "values": [
+        7.07,
+        7.13,
+        7.3,
+        7.71,
+        7.57,
+        7.54,
+        6.93,
+        7.48,
+        8
+      ]
+    },
+    {
+      "id": "tpt",
+      "kategori": "Ketenagakerjaan",
+      "nama": "Tingkat Pengangguran Terbuka (TPT)",
+      "satuan": "Persen",
+      "delta": "-0,09 poin persen dibanding 2024",
+      "chart_type": "line",
+      "color": "#0093DD",
+      "insight": "Tingkat Pengangguran Terbuka (TPT) Kabupaten Kerinci turun menjadi 2,42% pada tahun 2025.",
+      "values": [
+        2.74,
+        2.63,
+        2.43,
+        2.32,
+        2.61,
+        2.48,
+        2.51,
+        2.42,
+        null
+      ]
+    },
+    {
+      "id": "pdrb_growth",
+      "kategori": "PDRB",
+      "nama": "Pertumbuhan Ekonomi Tahunan",
+      "satuan": "Persen",
+      "delta": "4,89% pada tahun 2025",
+      "chart_type": "bar",
+      "color": "#68B92E",
+      "insight": "Laju pertumbuhan ekonomi Kabupaten Kerinci tetap terjaga positif di level 4,89% pada tahun 2025.",
+      "values": [
+        4.51,
+        4.92,
+        -0.85,
+        3.65,
+        4.78,
+        4.62,
+        4.75,
+        4.89,
+        null
+      ]
+    },
+    {
+      "id": "pdrb_adhb",
+      "kategori": "PDRB",
+      "nama": "PDRB Atas Dasar Harga Berlaku (ADHB)",
+      "satuan": "Miliar Rupiah",
+      "delta": "Meningkat setiap tahun",
+      "chart_type": "bar",
+      "color": "#005A9C",
+      "insight": "Nilai PDRB ADHB Kabupaten Kerinci menunjukkan ekspansi ekonomi berkelanjutan dari tahun ke tahun.",
+      "values": [
+        8945.2,
+        9620.4,
+        9580.1,
+        10210.5,
+        11145.8,
+        12030.4,
+        12980.6,
+        13950.2,
+        null
+      ]
+    }
+  ],
+  "sectors": [
+    {
+      "label": "Pertanian, Kehutanan & Perikanan",
+      "value": 50.65,
+      "color": "#68B92E"
+    },
+    {
+      "label": "Perdagangan Besar & Eceran",
+      "value": 10.61,
+      "color": "#005A9C"
+    },
+    {
+      "label": "Konstruksi",
+      "value": 10.1,
+      "color": "#0093DD"
+    },
+    {
+      "label": "Informasi & Komunikasi",
+      "value": 6.98,
+      "color": "#F58220"
+    },
+    {
+      "label": "Administrasi Pemerintahan",
+      "value": 4.58,
+      "color": "#0284C7"
+    },
+    {
+      "label": "Lapangan Usaha Lainnya",
+      "value": 17.08,
+      "color": "#94a3b8"
+    }
+  ],
+  "pdrbTriwulanan": [
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2022",
+      "periode": "Triwulan I",
+      "nilai": 2912.86
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2022",
+      "periode": "Triwulan II",
+      "nilai": 3004.62
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2022",
+      "periode": "Triwulan III",
+      "nilai": 3102.61
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2022",
+      "periode": "Triwulan IV",
+      "nilai": 3205.7
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2022",
+      "periode": "Jumlah",
+      "nilai": 12225.79
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2023",
+      "periode": "Triwulan I",
+      "nilai": 3175.01
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2023",
+      "periode": "Triwulan II",
+      "nilai": 3354.41
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2023",
+      "periode": "Triwulan III",
+      "nilai": 3413.65
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2023",
+      "periode": "Triwulan IV",
+      "nilai": 3464.94
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2023",
+      "periode": "Jumlah",
+      "nilai": 13408.01
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2024",
+      "periode": "Triwulan I",
+      "nilai": 3419.66
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2024",
+      "periode": "Triwulan II",
+      "nilai": 3694.59
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2024",
+      "periode": "Triwulan III",
+      "nilai": 3772.46
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2024",
+      "periode": "Triwulan IV",
+      "nilai": 3823.3
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2024",
+      "periode": "Jumlah",
+      "nilai": 14710.02
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2025",
+      "periode": "Triwulan I",
+      "nilai": 3750.91
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2025",
+      "periode": "Triwulan II",
+      "nilai": 3959.68
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2025",
+      "periode": "Triwulan III",
+      "nilai": 4034.11
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2025",
+      "periode": "Triwulan IV",
+      "nilai": 4065.53
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2025",
+      "periode": "Jumlah",
+      "nilai": 15810.23
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2026",
+      "periode": "Triwulan I",
+      "nilai": 3981.34
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2026",
+      "periode": "Triwulan II",
+      "nilai": 4242.65
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHB",
+      "tahun": "2026",
+      "periode": "Triwulan III",
+      "nilai": 4370.86
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2022",
+      "periode": "Triwulan I",
+      "nilai": 1726.56
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2022",
+      "periode": "Triwulan II",
+      "nilai": 1759.47
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2022",
+      "periode": "Triwulan III",
+      "nilai": 1801.78
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2022",
+      "periode": "Triwulan IV",
+      "nilai": 1837.25
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2022",
+      "periode": "Jumlah",
+      "nilai": 7125.06
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2023",
+      "periode": "Triwulan I",
+      "nilai": 1799.02
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2023",
+      "periode": "Triwulan II",
+      "nilai": 1890.38
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2023",
+      "periode": "Triwulan III",
+      "nilai": 1922.27
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2023",
+      "periode": "Triwulan IV",
+      "nilai": 1928.36
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2023",
+      "periode": "Jumlah",
+      "nilai": 7540.03
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2024",
+      "periode": "Triwulan I",
+      "nilai": 1861.5
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2024",
+      "periode": "Triwulan II",
+      "nilai": 1963.73
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2024",
+      "periode": "Triwulan III",
+      "nilai": 2004.79
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2024",
+      "periode": "Triwulan IV",
+      "nilai": 2047.97
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2024",
+      "periode": "Jumlah",
+      "nilai": 7877.99
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2025",
+      "periode": "Triwulan I",
+      "nilai": 1962.62
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2025",
+      "periode": "Triwulan II",
+      "nilai": 2063.89
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2025",
+      "periode": "Triwulan III",
+      "nilai": 2101.43
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2025",
+      "periode": "Triwulan IV",
+      "nilai": 2113.29
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2025",
+      "periode": "Jumlah",
+      "nilai": 8241.23
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2026",
+      "periode": "Triwulan I",
+      "nilai": 2048.32
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2026",
+      "periode": "Triwulan II",
+      "nilai": 2141.84
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "ADHK",
+      "tahun": "2026",
+      "periode": "Triwulan III",
+      "nilai": 2159.55
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2023",
+      "periode": "Triwulan I",
+      "nilai": -2.08
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2023",
+      "periode": "Triwulan II",
+      "nilai": 5.08
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2023",
+      "periode": "Triwulan III",
+      "nilai": 1.69
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2023",
+      "periode": "Triwulan IV",
+      "nilai": 0.32
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2024",
+      "periode": "Triwulan I",
+      "nilai": -3.47
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2024",
+      "periode": "Triwulan II",
+      "nilai": 5.49
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2024",
+      "periode": "Triwulan III",
+      "nilai": 2.09
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2024",
+      "periode": "Triwulan IV",
+      "nilai": 2.15
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2025",
+      "periode": "Triwulan I",
+      "nilai": -4.17
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2025",
+      "periode": "Triwulan II",
+      "nilai": 5.16
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2025",
+      "periode": "Triwulan III",
+      "nilai": 1.82
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2025",
+      "periode": "Triwulan IV",
+      "nilai": 0.56
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2026",
+      "periode": "Triwulan I",
+      "nilai": -3.07
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2026",
+      "periode": "Triwulan II",
+      "nilai": 4.57
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Q-to-Q)",
+      "tahun": "2026",
+      "periode": "Triwulan III",
+      "nilai": 0.83
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2023",
+      "periode": "Triwulan I",
+      "nilai": 4.2
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2023",
+      "periode": "Triwulan II",
+      "nilai": 7.44
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2023",
+      "periode": "Triwulan III",
+      "nilai": 6.69
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2023",
+      "periode": "Triwulan IV",
+      "nilai": 4.96
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2024",
+      "periode": "Triwulan I",
+      "nilai": 3.47
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2024",
+      "periode": "Triwulan II",
+      "nilai": 3.88
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2024",
+      "periode": "Triwulan III",
+      "nilai": 4.29
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2024",
+      "periode": "Triwulan IV",
+      "nilai": 6.2
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2025",
+      "periode": "Triwulan I",
+      "nilai": 5.43
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2025",
+      "periode": "Triwulan II",
+      "nilai": 5.1
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2025",
+      "periode": "Triwulan III",
+      "nilai": 4.82
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2025",
+      "periode": "Triwulan IV",
+      "nilai": 3.19
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2026",
+      "periode": "Triwulan I",
+      "nilai": 4.37
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2026",
+      "periode": "Triwulan II",
+      "nilai": 3.78
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (Y-on-Y)",
+      "tahun": "2026",
+      "periode": "Triwulan III",
+      "nilai": 2.77
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2023",
+      "periode": "Triwulan I",
+      "nilai": 4.2
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2023",
+      "periode": "Triwulan II",
+      "nilai": 5.83
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2023",
+      "periode": "Triwulan III",
+      "nilai": 6.12
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2023",
+      "periode": "Triwulan IV",
+      "nilai": 5.82
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2023",
+      "periode": "Jumlah",
+      "nilai": 5.82
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2024",
+      "periode": "Triwulan I",
+      "nilai": 3.47
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2024",
+      "periode": "Triwulan II",
+      "nilai": 3.68
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2024",
+      "periode": "Triwulan III",
+      "nilai": 3.89
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2024",
+      "periode": "Triwulan IV",
+      "nilai": 4.48
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2024",
+      "periode": "Jumlah",
+      "nilai": 4.48
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2025",
+      "periode": "Triwulan I",
+      "nilai": 5.43
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2025",
+      "periode": "Triwulan II",
+      "nilai": 5.26
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2025",
+      "periode": "Triwulan III",
+      "nilai": 5.11
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2025",
+      "periode": "Triwulan IV",
+      "nilai": 4.61
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2025",
+      "periode": "Jumlah",
+      "nilai": 4.61
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2026",
+      "periode": "Triwulan I",
+      "nilai": 4.37
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2026",
+      "periode": "Triwulan II",
+      "nilai": 4.06
+    },
+    {
+      "pendekatan": "Lapangan Usaha",
+      "jenis": "Pertumbuhan (C-to-C)",
+      "tahun": "2026",
+      "periode": "Triwulan III",
+      "nilai": 3.62
+    }
+  ]
+}

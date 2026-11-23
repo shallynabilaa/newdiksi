@@ -662,6 +662,14 @@ function setupEvents() {
   document.getElementById('inflationYearFilterChart')?.addEventListener('change', renderInflationChart);
   document.getElementById('inflationYearFilterTable')?.addEventListener('change', () => { currentInflationPage = 1; renderInflationTable(); });
 
+  // Event Filter Tab Inflasi
+  document.getElementById('inflationYearFilterChart')?.addEventListener('change', renderInflationChart);
+  document.getElementById('inflationYearFilterTable')?.addEventListener('change', () => {
+    currentInflationPage = 1;
+    renderInflationTable();
+  });
+
+  // Export Excel Indikator Strategis
   document.getElementById('exportCsvBtn')?.addEventListener('click', () => {
     const yearsHeader = dashboardData.years.map(y => `<th style="background-color:#002B49;color:#ffffff;font-weight:bold;border:1px solid #cbd5e1;padding:8px;text-align:right;">${y}</th>`).join('');
     const rowsHtml = dashboardData.indicators.map(i => `

@@ -43,10 +43,9 @@
       </a>
 
       <!-- Menu Navigasi Desktop -->
-      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600 dark:text-slate-300">
-        <button type="button" onclick="switchMainTab('strategis', 'ringkasan')" class="hover:text-[#005A9C] dark:hover:text-sky-400">Ringkasan</button>
-        <button type="button" onclick="switchMainTab('strategis', 'visualisasi')" class="hover:text-[#005A9C] dark:hover:text-sky-400">Grafik & Struktur</button>
-        <button type="button" onclick="switchMainTab('strategis', 'tabel-data')" class="hover:text-[#005A9C] dark:hover:text-sky-400">Tabel Data</button>
+      <nav class="hidden md:flex items-center gap-5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+        <button type="button" onclick="switchMainTab('strategis', 'ringkasan')" class="hover:text-[#005A9C] dark:hover:text-sky-400">Indikator Strategis</button>
+        <button type="button" onclick="switchMainTab('pdrbTriwulan', 'konten-utama')" class="text-[#68B92E] font-bold hover:underline">PDRB Triwulanan</button>
         <button type="button" onclick="switchMainTab('inflasi', 'konten-utama')" class="text-[#F58220] font-bold hover:underline">Data Inflasi</button>
         <a href="#layanan" class="hover:text-[#005A9C] dark:hover:text-sky-400">Layanan BPS</a>
       </nav>
@@ -65,9 +64,8 @@
 
     <!-- Navigasi Cepat Khusus Layar HP -->
     <nav class="flex md:hidden items-center justify-around border-t border-slate-100 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-900/90 px-2 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
-      <button type="button" onclick="switchMainTab('strategis', 'ringkasan')" class="py-1 px-2 rounded hover:text-[#005A9C]">Ringkasan</button>
-      <button type="button" onclick="switchMainTab('strategis', 'visualisasi')" class="py-1 px-2 rounded hover:text-[#005A9C]">Grafik</button>
-      <button type="button" onclick="switchMainTab('strategis', 'tabel-data')" class="py-1 px-2 rounded hover:text-[#005A9C]">Tabel</button>
+      <button type="button" onclick="switchMainTab('strategis', 'ringkasan')" class="py-1 px-2 rounded hover:text-[#005A9C]">Strategis</button>
+      <button type="button" onclick="switchMainTab('pdrbTriwulan', 'konten-utama')" class="py-1 px-2 rounded text-[#68B92E] font-bold">PDRB Triwulan</button>
       <button type="button" onclick="switchMainTab('inflasi', 'konten-utama')" class="py-1 px-2 rounded text-[#F58220] font-bold">Inflasi</button>
       <a href="#layanan" class="py-1 px-2 rounded hover:text-[#005A9C]">Layanan</a>
     </nav>
@@ -88,17 +86,17 @@
         </h1>
 
         <p class="text-xs sm:text-base text-slate-200 max-w-2xl leading-relaxed">
-          Portal diseminasi statistik makro BPS Kabupaten Kerinci (Kode Wilayah 1501) untuk mendukung perencanaan pembangunan daerah berbasis data yang akurat dan mutakhir.
+          Portal diseminasi statistik makro BPS Kabupaten Kerinci (Kode Wilayah 1501) meliputi Indikator Tahunan, PDRB Triwulanan (Lapangan Usaha & Pengeluaran), serta Perkembangan Inflasi Bulanan.
         </p>
 
         <div class="flex flex-wrap gap-2.5 pt-1">
           <button type="button" onclick="switchMainTab('strategis', 'visualisasi')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl btn-bps-orange font-bold text-xs sm:text-sm shadow-lg">
             <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-            <span>Jelajahi Grafik</span>
+            <span>Indikator Strategis</span>
           </button>
-          <button type="button" onclick="switchMainTab('strategis', 'tabel-data')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 font-semibold text-xs sm:text-sm">
-            <i data-lucide="table-2" class="w-4 h-4"></i>
-            <span>Tabel Data</span>
+          <button type="button" onclick="switchMainTab('pdrbTriwulan', 'konten-utama')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 font-semibold text-xs sm:text-sm">
+            <i data-lucide="pie-chart" class="w-4 h-4 text-green-300"></i>
+            <span>PDRB Triwulanan</span>
           </button>
           <button type="button" onclick="switchMainTab('inflasi', 'konten-utama')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 font-semibold text-xs sm:text-sm">
             <i data-lucide="trending-up" class="w-4 h-4 text-amber-300"></i>
@@ -120,24 +118,26 @@
   <!-- MAIN CONTENT -->
   <main id="konten-utama" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8 sm:space-y-12">
 
-    <!-- PEMILIH TAB UTAMA -->
-    <div class="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm grid grid-cols-2 gap-1.5">
+    <!-- PEMILIH 3 TAB UTAMA -->
+    <div class="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-1.5">
       <button id="tabBtnStrategis" type="button" onclick="switchMainTab('strategis')" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all bg-[#005A9C] text-white shadow">
         <i data-lucide="layers" class="w-4 h-4"></i>
-        <span>Indikator Data Strategis</span>
+        <span>Indikator Strategis (Tahunan)</span>
+      </button>
+      <button id="tabBtnPdrbTriwulan" type="button" onclick="switchMainTab('pdrbTriwulan')" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <i data-lucide="pie-chart" class="w-4 h-4 text-[#68B92E]"></i>
+        <span>PDRB Triwulanan (LU & Pengeluaran)</span>
       </button>
       <button id="tabBtnInflasi" type="button" onclick="switchMainTab('inflasi')" class="py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
         <i data-lucide="trending-up" class="w-4 h-4 text-[#F58220]"></i>
-        <span>Data Inflasi (2024–2026)</span>
+        <span>Data Inflasi Bulanan (2024–2026)</span>
       </button>
     </div>
 
     <!-- ======================================================================= -->
-    <!-- TAB 1: INDIKATOR DATA STRATEGIS                                         -->
+    <!-- TAB 1: INDIKATOR DATA STRATEGIS (TAHUNAN)                               -->
     <!-- ======================================================================= -->
     <div id="tabPanelStrategis" class="space-y-10 sm:space-y-14">
-
-      <!-- 1. RINGKASAN KARTU KPI -->
       <section id="ringkasan" class="space-y-4 sm:space-y-6">
         <div>
           <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#005A9C] dark:text-sky-400">Ringkasan Makro</span>
@@ -147,7 +147,6 @@
         <div id="kpiGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5"></div>
       </section>
 
-      <!-- 2. VISUALISASI GRAFIK INTERAKTIF & STRUKTUR PDRB -->
       <section id="visualisasi" class="grid lg:grid-cols-12 gap-5 sm:gap-6">
         <div class="lg:col-span-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-sm flex flex-col justify-between">
           <div class="space-y-3 sm:space-y-0 sm:flex sm:items-start sm:justify-between gap-3 mb-4">
@@ -189,7 +188,6 @@
         </div>
       </section>
 
-      <!-- 3. TABEL DATA LENGKAP DENGAN PAGINASI -->
       <section id="tabel-data" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 space-y-3 lg:space-y-0 lg:flex lg:items-center lg:justify-between gap-4">
           <div>
@@ -221,7 +219,69 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!-- TAB 2: DATA INFLASI BULANAN (YoY, MtM, YtD) 2024–2026                   -->
+    <!-- TAB 2: PDRB TRIWULANAN (LAPANGAN USAHA & PENGELUARAN)                   -->
+    <!-- ======================================================================= -->
+    <div id="tabPanelPdrbTriwulan" class="hidden space-y-6 sm:space-y-8">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#68B92E]">Produk Domestik Regional Bruto (Miliar Rupiah)</span>
+            <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white mt-0.5">PDRB Triwulanan Kabupaten Kerinci</h2>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="pdrbPendekatanFilter" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="Lapangan Usaha">PDRB Lapangan Usaha</option>
+              <option value="Pengeluaran">PDRB Pengeluaran</option>
+            </select>
+            <select id="pdrbJenisFilter" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="ADHB">Atas Dasar Harga Berlaku (ADHB)</option>
+              <option value="ADHK">Atas Dasar Harga Konstan (ADHK)</option>
+            </select>
+            <select id="pdrbTahunFilter" class="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold">
+              <option value="all">Semua Tahun</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="relative h-64 sm:h-72 w-full pt-2">
+          <canvas id="pdrbTriwulanChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 id="pdrbTableTitle" class="font-display font-bold text-lg text-slate-900 dark:text-white">Rincian Nilai PDRB Triwulanan (Miliar Rupiah)</h3>
+            <p class="text-xs text-slate-500">Data dapat diperbarui sewaktu-waktu melalui fitur Upload Excel/CSV di Panel Admin.</p>
+          </div>
+          <button id="exportPdrbTriwulanExcelBtn" type="button" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#68B92E] hover:bg-green-600 text-white text-xs font-bold shadow-sm self-start sm:self-auto">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Excel PDRB Triwulan</span>
+          </button>
+        </div>
+
+        <div class="table-scroll-wrapper">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[540px]">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-xs font-bold uppercase text-slate-600 dark:text-slate-300">
+                <th class="py-3.5 px-4">Pendekatan</th>
+                <th class="py-3.5 px-4">Jenis Harga</th>
+                <th class="py-3.5 px-4">Tahun</th>
+                <th class="py-3.5 px-4">Periode</th>
+                <th class="py-3.5 px-4 text-right">Nilai (Miliar Rp)</th>
+              </tr>
+            </thead>
+            <tbody id="pdrbTriwulanTableBody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+          </table>
+        </div>
+
+        <div id="pdrbTriwulanPagination" class="px-4 sm:px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 3: DATA INFLASI BULANAN (YoY, MtM, YtD) 2024–2026                   -->
     <!-- ======================================================================= -->
     <div id="tabPanelInflasi" class="hidden space-y-6 sm:space-y-8">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -8,6 +8,28 @@
   background-size: 20px 20px;
 }
 
+/* Wadah & Tombol Tab Utama Rata Tengah */
+.main-tab-bar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: stretch;
+}
+
+@media (max-width: 639px) {
+  .main-tab-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.main-tab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
 /* Tombol Aksi Utama BPS */
 .btn-bps-orange {
   background-color: #F58220;

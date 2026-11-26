@@ -63,51 +63,6 @@ const INITIAL_DB = {
     { label: 'Konstruksi', value: 9.80, color: '#0093DD' },
     { label: 'Administrasi Pemerintahan', value: 8.45, color: '#F58220' },
     { label: 'Lapangan Usaha Lainnya', value: 18.90, color: '#94a3b8' }
-  ],
-  pdrbTriwulanan: [
-    // ADHB Lapangan Usaha (2022 - 2025)
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan I', nilai: 2912.86 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan II', nilai: 3004.62 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan III', nilai: 3102.61 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan IV', nilai: 3205.70 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2022', periode: 'Jumlah', nilai: 12225.79 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan I', nilai: 3175.01 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan II', nilai: 3354.41 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan III', nilai: 3413.65 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan IV', nilai: 3464.94 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2023', periode: 'Jumlah', nilai: 13408.01 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan I', nilai: 3419.66 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan II', nilai: 3694.59 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan III', nilai: 3772.46 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan IV', nilai: 3823.30 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2024', periode: 'Jumlah', nilai: 14710.02 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan I', nilai: 3750.91 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan II', nilai: 3959.68 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan III', nilai: 4034.11 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan IV', nilai: 4065.53 },
-    { pendekatan: 'Lapangan Usaha', jenis: 'ADHB', tahun: '2025', periode: 'Jumlah', nilai: 15810.23 },
-
-    // ADHB Pengeluaran (2022 - 2025)
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan I', nilai: 2912.86 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan II', nilai: 3004.62 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan III', nilai: 3102.61 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2022', periode: 'Triwulan IV', nilai: 3205.70 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2022', periode: 'Jumlah', nilai: 12225.79 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan I', nilai: 3154.93 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan II', nilai: 3336.82 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan III', nilai: 3410.60 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2023', periode: 'Triwulan IV', nilai: 3503.21 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2023', periode: 'Jumlah', nilai: 13405.57 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan I', nilai: 3448.08 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan II', nilai: 3682.29 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan III', nilai: 3755.28 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2024', periode: 'Triwulan IV', nilai: 3833.60 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2024', periode: 'Jumlah', nilai: 14719.25 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan I', nilai: 3750.91 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan II', nilai: 3959.68 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan III', nilai: 4034.11 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2025', periode: 'Triwulan IV', nilai: 4065.53 },
-    { pendekatan: 'Pengeluaran', jenis: 'ADHB', tahun: '2025', periode: 'Jumlah', nilai: 15810.23 }
   ]
 };
 
@@ -117,12 +72,7 @@ function readDB() {
     fs.writeFileSync(dbFile, JSON.stringify(INITIAL_DB, null, 2), 'utf-8');
     return INITIAL_DB;
   }
-  const parsed = JSON.parse(fs.readFileSync(dbFile, 'utf-8'));
-  if (!parsed.pdrbTriwulanan) {
-    parsed.pdrbTriwulanan = INITIAL_DB.pdrbTriwulanan;
-    fs.writeFileSync(dbFile, JSON.stringify(parsed, null, 2), 'utf-8');
-  }
-  return parsed;
+  return JSON.parse(fs.readFileSync(dbFile, 'utf-8'));
 }
 
 function writeDB(data) {
@@ -207,16 +157,6 @@ app.put('/api/sectors', requireAuth, (req, res) => {
     return res.json({ success: true });
   }
   res.status(400).json({ error: 'Data sektor tidak valid' });
-});
-
-app.put('/api/pdrb-triwulanan', requireAuth, (req, res) => {
-  const db = readDB();
-  if (Array.isArray(req.body.pdrbTriwulanan)) {
-    db.pdrbTriwulanan = req.body.pdrbTriwulanan;
-    writeDB(db);
-    return res.json({ success: true, count: db.pdrbTriwulanan.length });
-  }
-  res.status(400).json({ error: 'Format data PDRB Triwulanan tidak valid' });
 });
 
 if (require.main === module) {
